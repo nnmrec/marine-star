@@ -19,8 +19,8 @@
 ## GROUP to run under, or run under backfill
 ## --------------------------------------------------------
 ## PBS -W group_list=hyak-motley
-#PBS -W group_list=hyak-stf
-## PBS -q bf
+## PBS -W group_list=hyak-stf
+#PBS -q bf
 
 
 ## --------------------------------------------------------
@@ -87,16 +87,19 @@ echo "** END DEBUGGING INFORMATION  *************************"
 ## Specify the applications to run here
 ## -------------------------------------------------------- 
 
-#starSimFile="seabed=smooth_coastlines=vertical_turbines=7_solver=segregated_run-Hyak"
-# starSimFile="seabed=smooth-sill_turbines=7-1DM_inlet=precursor-K-Omega_run-Hyak"
 starSimFile="mezzanine_mps1p0_turbines9_meshFine_v0.sim"
 
-starMacros="macroMeshAndRun.java"
+starMacros="macros/macroMeshAndRun.java"
 myPODkey="r7L8XXSBzQYnzS/zQEZ6Jw"
+
+
+## CHANGE directory to where job was submitted (careful, PBS defaults to user home directory)
+cd $PBS_O_WORKDIR
+
 
 ## KEEP copy of the initial cleared solution (small file size), rename file used for restart after checkpointing (this file gets big) 
 cp --no-clobber $starSimFile runs.$starSimFile
-log.$starSimFile
+rm log.$starSimFile
 # rm *.sim~
 
 ## RUN my simulation file in batch mode
