@@ -17,7 +17,7 @@ public class probeCreationFromCSV extends StarMacro {
 
 // Default name of the region is "Block". Enter the input part of your probe points.
         Region region_0 =
-                simulation_0.getRegionManager().getRegion("Block");
+                simulation_0.getRegionManager().getRegion(region);
 
         File f = new File(path);
         try {
