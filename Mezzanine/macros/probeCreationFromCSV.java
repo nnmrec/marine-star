@@ -10,7 +10,7 @@ public class probeCreationFromCSV extends StarMacro {
 
     public void execute() {
 
-        String path = "../inputs/ProbePoints.csv";
+        String path = "../inputs/probes.csv";
         String region = "Block";
 
         Simulation simulation_0 = getActiveSimulation();
