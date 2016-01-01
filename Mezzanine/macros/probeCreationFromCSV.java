@@ -10,6 +10,7 @@ public class probeCreationFromCSV extends StarMacro {
 
     public void execute() {
 
+// the file should NOT have any empty lines at top or bottom (improve his later by having a name column and rename in STAR)
         String path = "../inputs/probes.csv";
         String region = "Block";
 
@@ -17,7 +18,7 @@ public class probeCreationFromCSV extends StarMacro {
 
 // Default name of the region is "Block". Enter the input part of your probe points.
         Region region_0 =
-                simulation_0.getRegionManager().getRegion("Block");
+                simulation_0.getRegionManager().getRegion(region);
 
         File f = new File(path);
         try {
@@ -46,3 +47,4 @@ public class probeCreationFromCSV extends StarMacro {
         }
     }
 }
+
