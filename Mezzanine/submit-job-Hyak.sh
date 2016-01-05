@@ -63,7 +63,7 @@
 ## LOAD the appropriate environment modules and variables
 ## --------------------------------------------------------
 # module load contrib/starccm_10.06.009-R8
-contrib/starccm_10.06.009-R8
+module load contrib/starccm_10.06.009-R8
 
 
 ## --------------------------------------------------------
