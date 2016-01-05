@@ -4,7 +4,7 @@
 // license: ?
 // 
 // ideas: * for help with debgging: split the main or loop into multiple foor loops: make VD, vamke shape parts, refine, reports , monitors, ... 
-// 
+//        * there might be more inputs to pull from the WT_Perf files into here, like: the combined-case table (U RPM PITCH)
 // 
 // 
 package macro;
@@ -23,9 +23,10 @@ import star.vis.*;
 public class createVirtualDisks extends StarMacro {
 
 	///////////////////////////////////////////////////////////////////////////////
-	// USER INPUTS
+	// USER INPUTS (all these user inputs should be read from a CSV file instead)
 	// 
-  	static final int    nVirtualDisks 	= 9;		// turbine specifications
+  	static final int    nVirtualDisks 	= 9;
+
 	static final double hub_radius    	= 1.0;		
 	static final double rotor_radius  	= 12.5;
 	static final double rotor_thick   	= 2.0;
@@ -35,6 +36,8 @@ public class createVirtualDisks extends StarMacro {
 	static final double nx            	= 1.0;
 	static final double ny            	= 0.0;
 	static final double nz            	= 0.0;
+
+	String table = "../inputs/tsr7p0.csv";	// should be able to define a table for each turbine
 
 	// turbine names
 	String[] name_VirtualDisks = new String[]
@@ -49,6 +52,8 @@ public class createVirtualDisks extends StarMacro {
 		"turbine 8",
 		"turbine 9"
 	};
+
+	// I think these are not connecgted to the name ... they will always be named in order of creation
 	String[] name_VirtualDiskMarker = new String[]
 	{
 		"VirtualDiskMarker1",
@@ -159,7 +164,8 @@ public class createVirtualDisks extends StarMacro {
 
 	    // optional: could load different power tables for different turbine types or operating conditions
 	    FileTable fileTable_0 = 
-          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/virtual-blade-1DM_Speed_Power_Ct.csv"));
+          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table));
+          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/virtual-blade-1DM_Speed_Power_Ct.csv"));
           // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("/mnt/data-RAID-10/akshaybagi/Mezzanine/Starccm+_WT_perf_Speed_Power_Ct.csv"));
           
 	    powerCurveTableMethod_0.setTable(fileTable_0);

@@ -54,6 +54,8 @@ public class run extends StarMacro {
     // run the simulation (this will restart from solution of previous known iteration)
     simulation_0.getSimulationIterator().run();
 
+    simulation_0.saveState(getSimulation().getPresentationName()+".sim");
+
 
   } // end execute0()
 } // end public class

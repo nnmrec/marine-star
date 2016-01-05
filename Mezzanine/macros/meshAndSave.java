@@ -21,7 +21,7 @@ public class meshAndSave extends StarMacro {
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
   //
-  String path0                = "/mnt/data-RAID-1/danny/marine-star/Mezzanine/meshed.Mezzanine.v0.sim";
+  // String path0                = "Mezzanine_v0.sim";
   static final int save_iters = 100;     // number of iterations to trigger the auto-save
   ///////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +74,8 @@ public class meshAndSave extends StarMacro {
 
 
     // save the meshed simulation
-    simulation_0.saveState(resolvePath(path0));
+    // simulation_0.saveState(resolvePath(path0));
+    simulation_0.saveState(getSimulation().getPresentationName()+".sim");
 
 
   } // end execute0()

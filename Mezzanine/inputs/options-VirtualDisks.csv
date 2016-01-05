@@ -1,0 +1,10 @@
+name,table,rotor_radius,hub_radius,rotor_thick,rotor_rpm,x,y,z,nx,ny,nz
+turbine-01,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-02,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-03,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-04,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-05,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-06,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-07,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-08,tsr7p0,10,1,2,11.5,100,200,30,1,0,0
+turbine-09,tsr7p0,10,1,2,11.5,100,200,30,1,0,0

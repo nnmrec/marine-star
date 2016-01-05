@@ -76,8 +76,8 @@ public class main extends StarMacro {
 
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
-  static final int refinementLevels = 3;
-
+  static final int couplingIters    = 3;
+  static final int refinementLevels = 2;
 
   public void execute() {
     execute0();
@@ -99,34 +99,44 @@ public class main extends StarMacro {
 
 	  new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("meshAndSave.java"))).play();
 
-    // at this point, simulation is ready to run, but first setup some basic scenes
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
 
 
     // Main loop for exchanging data between the "mooring model" and "CFD model"
-    for (int i = 0; i < refinementLevels; i++) {
+    // 
+    // things that update in this loop:
+    //  * file for probe and turbine locations (name, reference velocity, x, y, z)
+    //  * file for export probe and turbine locations (name, reference velocity, x, y, z)
+    for (int i = 0; i < couplingIters; i++) {
     	
       // run the simulation to its stopping criteria (number iterations set inside this macro)
       // this run.java macro fails because it does not conintue running ... need to update the max iterations before running again
       new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
 
-      // extract solution (disks and probes)
+      // extract probe data, then update probe coordinates [flag to skip the update step]
       new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateProbes.java"))).play();
 
-      // update Virtual Disks (disks and probes)
+      // extract Virtual Disk data, then update the Virtual Disks [flag to skip the update step]
       // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
 
+      // run the mooring-model code
+      // execute a system call to Matlab ... Matlab should be responsible for writing the updated files for probes and virtual disks
+      // 
 
-      // MESH REFINEMENT
+      // read the updated probe and virtual disk data output from mooring-model code [flag to skip the export step]
 
-    	// update the field function regarding threshold for adaptive-mesh-refinement 
-    	// update field function to compute new cell sizes
-    	// extract the table for cell sizes, load the table in mesh table refiment, save mesh
-    	// new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("refineMeshAdaptive.java"))).play();
 
-    	// update the mesh, which uses the mesh refinement table defined above
-    	// new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("macroMeshAndSave.java"))).play();
-
+        // ADAPTIVE MESH REFINEMENT
+        // for (int j = 0; j < refinementLevels; j++) {
+        //   // update the field function regarding threshold for adaptive-mesh-refinement 
+        //   // update field function to compute new cell sizes
+        //   // extract the table for cell sizes, load the table in mesh table refiment, save mesh
+        //   //   new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("refineMeshAdaptive.java"))).play();
+        //   // update the mesh, which uses the mesh refinement table defined above
+        //   //   new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("meshAndSave.java"))).play();
+        // }
+      
+          
   		// update and print Scenes
   		// new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
 

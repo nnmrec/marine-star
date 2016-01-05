@@ -20,9 +20,9 @@ public class updateProbes extends StarMacro {
     // USER INPUTS
     //
     // path to CSV file with names and coordinates of point probes (this gets updated from the "mooring model" code) This file should NOT have any empty lines at bottom 
-    String path0     = "/mnt/data-RAID-1/danny/marine-star/Mezzanine/inputs/probes-initial.csv";
-    String path1     = "/mnt/data-RAID-1/danny/marine-star/Mezzanine/inputs/probes-updated.csv";
-    String path2     = "/mnt/data-RAID-1/danny/marine-star/Mezzanine/outputs/probes-extract-VelocityMag.csv";
+    String path0     = "inputs/probes-initial.csv";
+    String path1     = "inputs/probes-updated.csv";
+    String path2     = "../outputs/probes-extract-VelocityMag.csv";
     String region    = "Block";                  // Default name of the region is "Block". not really a user input ... hardcoded everywhere else
 
     ///////////////////////////////////////////////////////////////////////////////

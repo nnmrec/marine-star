@@ -66,37 +66,14 @@
 module load contrib/starccm_10.06.009-R8
 
 
-## --------------------------------------------------------
-## Debugging information (include jobs logs in any help requests)
-## --------------------------------------------------------
-## Total Number of nodes and processors (cores) to be used by the job
-echo "** JOB DEBUGGING INFORMATION  *************************"
-HYAK_NNODES=$(uniq $PBS_NODEFILE | wc -l )
-HYAK_NPE=$(wc -l < $PBS_NODEFILE)
-echo "This job will run on $HYAK_NNODES nodes with $HYAK_NPE total CPU-cores"
-echo ""
-echo "Node:CPUs Used"
-uniq -c $PBS_NODEFILE | awk '{print $2 ":" $1}'
-echo ""
-echo "ENVIRONMENT VARIABLES"
-set
-echo ""
-echo "** END DEBUGGING INFORMATION  *************************"
-
-
 ## -------------------------------------------------------- 
 ## Specify the applications to run here
 ## -------------------------------------------------------- 
-
 starSimFile="Mezzanine_v0.sim"
 
 starMacros="macros/main.java"
+
 myPODkey="r7L8XXSBzQYnzS/zQEZ6Jw"
-
-
-## CHANGE directory to where job was submitted (careful, PBS defaults to user home directory)
-cd $PBS_O_WORKDIR
-
 
 ## KEEP copy of the initial cleared solution (small file size), rename file used for restart after checkpointing (this file gets big) 
 cp --no-clobber $starSimFile runs.$starSimFile
