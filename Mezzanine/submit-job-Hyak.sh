@@ -18,17 +18,17 @@
 ## --------------------------------------------------------
 ## GROUP to run under, or run under backfill
 ## --------------------------------------------------------
-## PBS -W group_list=hyak-motley
+#PBS -W group_list=hyak-motley
 ## PBS -W group_list=hyak-stf
-#PBS -q bf
+## PBS -q bf
 
 
 ## --------------------------------------------------------
 ## NUMBER nodes, CPUs per node, and MEMORY
 ## --------------------------------------------------------
-## PBS -l nodes=1:ppn=16,mem=60gb,feature=intel
+#PBS -l nodes=1:ppn=16,mem=55gb,feature=intel
 ## PBS -l nodes=2:ppn=16,mem=60gb,feature=intel
-#PBS -l nodes=3:ppn=16,mem=150gb,feature=intel
+## PBS -l nodes=3:ppn=16,mem=150gb,feature=intel
 ## PBS -l nodes=4:ppn=16,mem=60gb,feature=intel
 ## PBS -l nodes=8:ppn=16,mem=60gb,feature=intel
 ## PBS -l nodes=16:ppn=16,mem=60gb,feature=intel
@@ -87,9 +87,9 @@ echo "** END DEBUGGING INFORMATION  *************************"
 ## Specify the applications to run here
 ## -------------------------------------------------------- 
 
-starSimFile="mezzanine_mps1p0_turbines9_meshFine_v0.sim"
+starSimFile="Mezzanine_v0.sim"
 
-starMacros="macros/macroMeshAndRun.java"
+starMacros="macros/main.java"
 myPODkey="r7L8XXSBzQYnzS/zQEZ6Jw"
 
 
