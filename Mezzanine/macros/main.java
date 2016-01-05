@@ -76,8 +76,8 @@ public class main extends StarMacro {
 
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
-  static final int couplingIters    = 3;
-  static final int refinementLevels = 2;
+  static final int couplingIters    = 1;    // number of times to iterate between the CFD and Mooring Dynamics codes
+  static final int refinementLevels = 0;    // number of times to adaptively refine the CFD mesh upon initial solution
 
   public void execute() {
     execute0();
@@ -102,11 +102,31 @@ public class main extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
 
 
-    // Main loop for exchanging data between the "mooring model" and "CFD model"
-    // 
-    // things that update in this loop:
-    //  * file for probe and turbine locations (name, reference velocity, x, y, z)
-    //  * file for export probe and turbine locations (name, reference velocity, x, y, z)
+
+    // ADAPTIVE MESH REFINEMENT
+    if (refinementLevels > 0){ 
+        // run the level-0 mesh to convergence
+        new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
+        
+        // iterate refine and run
+        for (int j = 0; j < refinementLevels; j++) {  
+          // update the field function regarding threshold for adaptive-mesh-refinement 
+          // update field function to compute new cell sizes
+          // extract the table for cell sizes, load the table in mesh table refiment, save mesh
+          new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMeshAdaptive.java"))).play();
+          // update the mesh, which uses the mesh refinement table defined above
+          new StarScript(getActiveSimulation(), new java.io.File(resolvePath("meshAndSave.java"))).play();
+          new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
+      }
+
+    }       
+
+
+    // // Main loop for exchanging data between the "mooring model" and "CFD model"
+    // // 
+    // // things that update in this loop:
+    // //  * file for probe and turbine locations (name, reference velocity, x, y, z)
+    // //  * file for export probe and turbine locations (name, reference velocity, x, y, z)
     for (int i = 0; i < couplingIters; i++) {
     	
       // run the simulation to its stopping criteria (number iterations set inside this macro)
@@ -117,30 +137,28 @@ public class main extends StarMacro {
       new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateProbes.java"))).play();
 
       // extract Virtual Disk data, then update the Virtual Disks [flag to skip the update step]
-      // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
+      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
 
       // run the mooring-model code
       // execute a system call to Matlab ... Matlab should be responsible for writing the updated files for probes and virtual disks
-      // 
+      // matlab
 
-      // read the updated probe and virtual disk data output from mooring-model code [flag to skip the export step]
+      // read probe data, then update probe coordinates [flag to skip the export step]
+      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateProbes.java"))).play();
+
+      // read Virtual Disk data, then update the Virtual Disks [flag to skip the export step]
+      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
 
 
-        // ADAPTIVE MESH REFINEMENT
-        // for (int j = 0; j < refinementLevels; j++) {
-        //   // update the field function regarding threshold for adaptive-mesh-refinement 
-        //   // update field function to compute new cell sizes
-        //   // extract the table for cell sizes, load the table in mesh table refiment, save mesh
-        //   //   new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("refineMeshAdaptive.java"))).play();
-        //   // update the mesh, which uses the mesh refinement table defined above
-        //   //   new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("meshAndSave.java"))).play();
-        // }
       
           
   		// update and print Scenes
-  		// new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
+  		new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
 
     }
+
+    // Post-Post-Processing
+    // 
 
 
   } // end execute0()
