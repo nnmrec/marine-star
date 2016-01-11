@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.*;
 import star.common.*;
 import star.base.neo.*;
+import star.base.report.*;
 
 import star.vis.*;
 
@@ -21,7 +22,7 @@ public class createProbes extends StarMacro {
     // USER INPUTS
     //
     // path to CSV file with names and coordinates of point probes (this gets updated from the "mooring model" code) This file should NOT have any empty lines at bottom 
-    String path0    = "inputs/probes-initial.csv";
+    String path0    = "inputs/probes.csv";
     String region   = "Block";                  // Default name of the region is "Block". not really a user input ... hardcoded everywhere else
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -43,7 +44,6 @@ public class createProbes extends StarMacro {
 
             // count the number of lines in the file (naive way, but just loop until end of file)
             ArrayList<String> names = new ArrayList<String>();
-            // String[] names = new String[0];
             Integer nLines = new Integer(0);
             while (sc.hasNextLine()) {
                 if(nLines == 0) {
@@ -69,37 +69,89 @@ public class createProbes extends StarMacro {
             } // end while
 
 
-            // create an Internal XYZ Table used to export variables
-            XyzInternalTable xyzInternalTable_0 = 
-              simulation_0.getTableManager().createTable(XyzInternalTable.class);
-            
-            xyzInternalTable_0.setPresentationName("extract-Point-Probes");
-
-            // add parts to the table
+            // create a report for each probe, then a monitor for each probe, then a single plot with all probes
             int nParts = nLines - 1;
-            ArrayList<PointPart> pointParts = new ArrayList<PointPart>();
+            ArrayList<PointPart>     pointParts = new ArrayList<PointPart>();
             for (int i = 0; i < nParts; i++) {
-              PointPart pointPart_n = 
-                ((PointPart) simulation_0.getPartManager().getObject(names.get(i)));
-              pointParts.add(pointPart_n);
+              
+                MaxReport maxReport_0 = 
+                  simulation_0.getReportManager().createReport(MaxReport.class);
+
+                maxReport_0.setPresentationName(names.get(i));
+
+                PointPart pointPart_n = 
+                    ((PointPart) simulation_0.getPartManager().getObject(names.get(i)));
+                pointParts.add(pointPart_n);
+
+                maxReport_0.getParts().setObjects(pointPart_n);
+
+                PrimitiveFieldFunction primitiveFieldFunction_0 = 
+                  ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("Velocity"));
+
+                VectorMagnitudeFieldFunction vectorMagnitudeFieldFunction_0 = 
+                  ((VectorMagnitudeFieldFunction) primitiveFieldFunction_0.getMagnitudeFunction());
+
+                maxReport_0.setScalar(vectorMagnitudeFieldFunction_0);
+
+                maxReport_0.setSmooth(true);
+
+                ReportMonitor reportMonitor_0 = 
+                  maxReport_0.createMonitor();
+                reportMonitor_0.setPresentationName(names.get(i));
             }
-            xyzInternalTable_0.getParts().setObjects(pointParts);
+
+            // make the plot
+            ReportMonitor reportMonitor_0 = 
+                  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(names.get(0)));
+
+            MonitorPlot monitorPlot_0 = 
+              simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "probes-velocity");
+
+            monitorPlot_0.setPresentationName("probes-velocity");
+
+            monitorPlot_0.setTitle("velocity at probes");
+
+            for (int i = 1; i < nParts; i++) {
+                ReportMonitor reportMonitor_n = 
+                  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(names.get(i)));
+
+                monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_n}));
+            }
 
 
-            // choose the variables to extract
-            PrimitiveFieldFunction primitiveFieldFunction_0 = 
-              ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("Velocity"));
 
-            VectorMagnitudeFieldFunction vectorMagnitudeFieldFunction_0 = 
-              ((VectorMagnitudeFieldFunction) primitiveFieldFunction_0.getMagnitudeFunction());
+            // // create an Internal XYZ Table used to export variables (the "export" of tables is not great because it does not include the part name!)
+            // XyzInternalTable xyzInternalTable_0 = 
+            //   simulation_0.getTableManager().createTable(XyzInternalTable.class);
+            
+            // xyzInternalTable_0.setPresentationName("extract-Point-Probes");
 
-            xyzInternalTable_0.setFieldFunctions(new NeoObjectVector(new Object[] {vectorMagnitudeFieldFunction_0}));
+            // // add parts to the table
+            // int nParts = nLines - 1;
+            // ArrayList<PointPart> pointParts = new ArrayList<PointPart>();
+            // for (int i = 0; i < nParts; i++) {
+            //   PointPart pointPart_n = 
+            //     ((PointPart) simulation_0.getPartManager().getObject(names.get(i)));
+            //   pointParts.add(pointPart_n);
+            // }
+            // xyzInternalTable_0.getParts().setObjects(pointParts);
 
-            // set the path for table
-            TableUpdate tableUpdate_0 = 
-              xyzInternalTable_0.getTableUpdate();
+            // // choose the variables to extract
+            // PrimitiveFieldFunction primitiveFieldFunction_0 = 
+            //   ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("Velocity"));
 
-            tableUpdate_0.setFilePath("outputs");
+            // VectorMagnitudeFieldFunction vectorMagnitudeFieldFunction_0 = 
+            //   ((VectorMagnitudeFieldFunction) primitiveFieldFunction_0.getMagnitudeFunction());
+
+            // xyzInternalTable_0.setFieldFunctions(new NeoObjectVector(new Object[] {vectorMagnitudeFieldFunction_0}));
+
+            // // set the path for table
+            // TableUpdate tableUpdate_0 = 
+            //   xyzInternalTable_0.getTableUpdate();
+
+            // tableUpdate_0.setFilePath("outputs");
+
+
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(createProbes.class.getName()).log(Level.SEVERE, null, ex);

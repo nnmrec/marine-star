@@ -76,8 +76,8 @@ public class main extends StarMacro {
 
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
-  static final int couplingIters    = 1;    // number of times to iterate between the CFD and Mooring Dynamics codes
   static final int refinementLevels = 0;    // number of times to adaptively refine the CFD mesh upon initial solution
+  ///////////////////////////////////////////////////////////////////////////////
 
   public void execute() {
     execute0();
@@ -102,7 +102,6 @@ public class main extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
 
 
-
     // ADAPTIVE MESH REFINEMENT
     if (refinementLevels > 0){ 
         // run the level-0 mesh to convergence
@@ -118,47 +117,24 @@ public class main extends StarMacro {
           new StarScript(getActiveSimulation(), new java.io.File(resolvePath("meshAndSave.java"))).play();
           new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
       }
-
     }       
 
+    // run the simulation to its stopping criteria (number iterations set inside this macro)
+    // this run.java macro fails because it does not conintue running ... need to update the max iterations before running again
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
+   
+    // extract probe data, then update probe coordinates [flag to skip the update step]
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("exportProbes.java"))).play();
+   
+    // extract Virtual Disk data, then update the Virtual Disks [flag to skip the update step]
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("exportVirtualDisks.java"))).play();
 
-    // // Main loop for exchanging data between the "mooring model" and "CFD model"
-    // // 
-    // // things that update in this loop:
-    // //  * file for probe and turbine locations (name, reference velocity, x, y, z)
-    // //  * file for export probe and turbine locations (name, reference velocity, x, y, z)
-    for (int i = 0; i < couplingIters; i++) {
-    	
-      // run the simulation to its stopping criteria (number iterations set inside this macro)
-      // this run.java macro fails because it does not conintue running ... need to update the max iterations before running again
-      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
+    // update and print Scenes
+    // new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
 
-      // extract probe data, then update probe coordinates [flag to skip the update step]
-      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateProbes.java"))).play();
-
-      // extract Virtual Disk data, then update the Virtual Disks [flag to skip the update step]
-      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
-
-      // run the mooring-model code
-      // execute a system call to Matlab ... Matlab should be responsible for writing the updated files for probes and virtual disks
-      // matlab
-
-      // read probe data, then update probe coordinates [flag to skip the export step]
-      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateProbes.java"))).play();
-
-      // read Virtual Disk data, then update the Virtual Disks [flag to skip the export step]
-      new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateVirtualDisks.java"))).play();
+    // }
 
 
-      
-          
-  		// update and print Scenes
-  		new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
-
-    }
-
-    // Post-Post-Processing
-    // 
 
 
   } // end execute0()

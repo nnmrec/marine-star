@@ -37,7 +37,7 @@ public class createScenes extends StarMacro {
       simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
     CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
-      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine 1-CSys 1"));
+      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine-01-CSys 1"));
 
     planeSection_3.setCoordinateSystem(cartesianCoordinateSystem_0);
 

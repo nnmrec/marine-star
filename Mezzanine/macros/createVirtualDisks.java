@@ -19,100 +19,104 @@ import star.trimmer.*;
 import star.meshing.*;
 import star.vis.*;
 
+import java.io.*;
+import java.util.logging.*;
+
+
 
 public class createVirtualDisks extends StarMacro {
 
 	///////////////////////////////////////////////////////////////////////////////
 	// USER INPUTS (all these user inputs should be read from a CSV file instead)
-	// 
-  	static final int    nVirtualDisks 	= 9;
-
-	static final double hub_radius    	= 1.0;		
-	static final double rotor_radius  	= 12.5;
-	static final double rotor_thick   	= 2.0;
-	// static final double rotor_spacing 	= 28.0;
-	// static final double rotor_height  	= 30.0;
-	static final double rotor_rpm     	= 11.5;
-	static final double nx            	= 1.0;
-	static final double ny            	= 0.0;
-	static final double nz            	= 0.0;
-
-	String table = "../inputs/tsr7p0.csv";	// should be able to define a table for each turbine
-
-	// turbine names
-	String[] name_VirtualDisks = new String[]
-	{
-		"turbine 1",
-		"turbine 2",
-		"turbine 3",
-		"turbine 4",
-		"turbine 5",
-		"turbine 6",
-		"turbine 7",
-		"turbine 8",
-		"turbine 9"
-	};
-
-	// I think these are not connecgted to the name ... they will always be named in order of creation
-	String[] name_VirtualDiskMarker = new String[]
-	{
-		"VirtualDiskMarker1",
-		"VirtualDiskMarker2",
-		"VirtualDiskMarker3",
-		"VirtualDiskMarker4",
-		"VirtualDiskMarker5",
-		"VirtualDiskMarker6",
-		"VirtualDiskMarker7",
-		"VirtualDiskMarker8",
-		"VirtualDiskMarker9"
-	};
-	String[] name_VirtualDiskInflowPlaneMarker = new String[]
-	{
-		"VirtualDiskInflowPlaneMarker1",
-		"VirtualDiskInflowPlaneMarker2",
-		"VirtualDiskInflowPlaneMarker3",
-		"VirtualDiskInflowPlaneMarker4",
-		"VirtualDiskInflowPlaneMarker5",
-		"VirtualDiskInflowPlaneMarker6",
-		"VirtualDiskInflowPlaneMarker7",
-		"VirtualDiskInflowPlaneMarker8",
-		"VirtualDiskInflowPlaneMarker9"
-	};
-  	// turbine coordinates - Mezzanine - first 2 rows
-	double[][] coords_VirtualDisks = new double[][]
-	{
-		{187.5,   100, 44.5},
-		{187.5,   175, 44.5},
-		{187.5,   250, 44.5},
-		{187.5,   325, 44.5},
-		{187.5,   400, 44.5},
-		{  375, 137.5, 44.5},
-		{  375, 212.5, 44.5},
-		{  375, 287.5, 44.5},
-		{  375, 362.5, 44.5}
-	};
+	String path0    = "inputs/rotors.csv";
 	///////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
 
 	public void execute() {
 		execute0();
 	}
-
-///////////////////////////////////////////////////////////////////////////////
 
 	private void execute0() {
 
     Simulation simulation_0 = 
       getActiveSimulation();
 
-
     PhysicsContinuum physicsContinuum_0 = 
       ((PhysicsContinuum) simulation_0.getContinuumManager().getContinuum("Physics 1"));
+
+    AutoMeshOperation autoMeshOperation_0 = 
+      ((AutoMeshOperation) simulation_0.get(MeshOperationManager.class).getObject("Automated Mesh"));
+
+
+      //
+      int 			nVirtualDisks 	= 0;
+      List<String>	textline 		= new ArrayList<String>();
+
+
+		File f = new File(path0);
+        try {
+
+            FileReader	fr   = new FileReader(f);
+            Scanner     sc   = new Scanner(fr);
+            String      line = "";
+            
+            Integer nLines = new Integer(0);
+            while (sc.hasNextLine()) {
+			    // this skips the header line
+			    if(nLines == 0) {
+			       nLines = nLines + 1;
+			       sc.nextLine();
+			       continue;
+			    }
+                nLines = nLines + 1;
+                line = sc.nextLine();
+                textline.add(line);
+            }
+            nVirtualDisks = nLines - 1;          
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(createVirtualDisks.class.getName()).log(Level.SEVERE, null, ex);
+        } // end try
+
+      simulation_0.println("DEBUG 0: nVirtualDisks = " + nVirtualDisks);
+
+      String[] name        	= new String[nVirtualDisks];
+      String[] table       	= new String[nVirtualDisks];
+      double[] rotor_rpm	= new double[nVirtualDisks];
+      double[] x 			= new double[nVirtualDisks];
+      double[] y 			= new double[nVirtualDisks];
+      double[] z 			= new double[nVirtualDisks];
+      double[] nx 			= new double[nVirtualDisks];
+      double[] ny 			= new double[nVirtualDisks];
+      double[] nz 			= new double[nVirtualDisks];
+      double[] rotor_radius	= new double[nVirtualDisks];
+      double[] hub_radius	= new double[nVirtualDisks];
+      double[] rotor_thick	= new double[nVirtualDisks];
+      for (int i = 0; i < nVirtualDisks; i++) {
+      	name[i]			= textline.get(i).split(",")[0];
+      	table[i]		= textline.get(i).split(",")[1];
+      	rotor_rpm[i] 	= Double.parseDouble(textline.get(i).split(",")[2]);
+      	x[i]			= Double.parseDouble(textline.get(i).split(",")[3]);
+      	y[i]			= Double.parseDouble(textline.get(i).split(",")[4]);
+      	z[i]			= Double.parseDouble(textline.get(i).split(",")[5]);
+      	nx[i]			= Double.parseDouble(textline.get(i).split(",")[6]);
+      	ny[i]			= Double.parseDouble(textline.get(i).split(",")[7]);
+      	nz[i]           = Double.parseDouble(textline.get(i).split(",")[8]);
+      	rotor_radius[i] = Double.parseDouble(textline.get(i).split(",")[9]);
+      	hub_radius[i]   = Double.parseDouble(textline.get(i).split(",")[10]);
+      	rotor_thick[i]  = Double.parseDouble(textline.get(i).split(",")[11]);
+      }
+
+      String[] name_VirtualDiskMarker 				= new String[nVirtualDisks];
+      String[] name_VirtualDiskInflowPlaneMarker 	= new String[nVirtualDisks];
+      for (int j = 0; j < nVirtualDisks; j++) {
+      	// I think these are not connected to the "name" ... they will always be named in order of creation
+      	name_VirtualDiskMarker[j] = "VirtualDiskMarker" + (j+1);
+		name_VirtualDiskInflowPlaneMarker[j] = "VirtualDiskInflowPlaneMarker" + (j+1);
+      }
+			
+
+
+
 
 
 
@@ -133,7 +137,7 @@ public class createVirtualDisks extends StarMacro {
 	      physicsContinuum_0.getModelManager().getModel(VirtualDiskModel.class);
 
 	    VirtualDisk virtualDisk_0 = 
-	      virtualDiskModel_0.getVirtualDiskManager().createDisk(name_VirtualDisks[i]);
+	      virtualDiskModel_0.getVirtualDiskManager().createDisk(name[i]);
 
       	virtualDisk_0.setDisplaySourceTerm(true);
 
@@ -164,26 +168,29 @@ public class createVirtualDisks extends StarMacro {
 
 	    // optional: could load different power tables for different turbine types or operating conditions
 	    FileTable fileTable_0 = 
-          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table));
+          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[0] + ".csv"));
+          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[i] + ".csv"));
+          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table[i]));
+          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table));
           // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/virtual-blade-1DM_Speed_Power_Ct.csv"));
           // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("/mnt/data-RAID-10/akshaybagi/Mezzanine/Starccm+_WT_perf_Speed_Power_Ct.csv"));
           
 	    powerCurveTableMethod_0.setTable(fileTable_0);
 
-	    powerCurveTableMethod_0.setWindSpeed("Wind-speed_m/s");
+	    powerCurveTableMethod_0.setWindSpeed("WindSpeed_m/s");
 
-	    powerCurveTableMethod_0.setPower("Power_watts");
+	    powerCurveTableMethod_0.setPower("Power_Watts");
 
-	    powerCurveTableMethod_0.setThrustCoeff("Thrust-Ct");
+	    powerCurveTableMethod_0.setThrustCoeff("ThrustCoefficient");
 
 	    SimpleDiskGeometry simpleDiskGeometry_0 = 
 	      virtualDisk_0.getComponentsManager().get(SimpleDiskGeometry.class);
 
-	    simpleDiskGeometry_0.getDiskOuterRadius().setValue(rotor_radius);
+	    simpleDiskGeometry_0.getDiskOuterRadius().setValue(rotor_radius[i]);
 
-	    simpleDiskGeometry_0.getDiskInnerRadius().setValue(hub_radius);
+	    simpleDiskGeometry_0.getDiskInnerRadius().setValue(hub_radius[i]);
 
-	    simpleDiskGeometry_0.getDiskThickness().setValue(rotor_thick);
+	    simpleDiskGeometry_0.getDiskThickness().setValue(rotor_thick[i]);
 
 	    Coordinate coordinate_0 = 
 	      simpleDiskGeometry_0.getDiskOrigin();
@@ -191,16 +198,21 @@ public class createVirtualDisks extends StarMacro {
 	    Units units_1 = 
 	      ((Units) simulation_0.getUnitsManager().getObject("m"));
 
-	    coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {coords_VirtualDisks[i][0], coords_VirtualDisks[i][1], coords_VirtualDisks[i][2]}));
+	    simulation_0.println("DEBUG 00: x = " + x[i]);
+	    simulation_0.println("DEBUG 00: y = " + y[i]);
+	    simulation_0.println("DEBUG 00: z = " + z[i]);
+	    coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {x[i], y[i], z[i]}));
+	    // coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {coords_VirtualDisks[i][0], coords_VirtualDisks[i][1], coords_VirtualDisks[i][2]}));
 
-	    ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx, ny, nz);
+	    ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx[i], ny[i], nz[i]);
+	    // ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx, ny, nz);
 
 	    PropellerInflowVelocityPlane propellerInflowVelocityPlane_2 = 
 	      virtualDisk_0.getComponentsManager().get(PropellerInflowVelocityPlane.class);
 
-	    propellerInflowVelocityPlane_2.getRadius().setValue(rotor_radius);
+	    propellerInflowVelocityPlane_2.getRadius().setValue(rotor_radius[i]);
 
-	    propellerInflowVelocityPlane_2.getOffset().setValue(-1*4*rotor_radius);
+	    propellerInflowVelocityPlane_2.getOffset().setValue(-1*4*rotor_radius[i]);
 
 	    VdmRotationRateInputValue vdmRotationRateInputValue_2 = 
 	      virtualDisk_0.getComponentsManager().get(VdmRotationRateInputValue.class);
@@ -210,7 +222,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    vdmRotationRateInputValue_2.getRotationRate().setUnits(units_0);
 
-	    vdmRotationRateInputValue_2.getRotationRate().setValue(rotor_rpm);
+	    vdmRotationRateInputValue_2.getRotationRate().setValue(rotor_rpm[i]);
 
 
 
@@ -237,10 +249,10 @@ public class createVirtualDisks extends StarMacro {
 
       	virtualDiskMomentReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskMomentReport_0.setPresentationName("Torque " + name_VirtualDisks[i]);
+		virtualDiskMomentReport_0.setPresentationName("Torque {" + name[i] + "}");
 
 	    VirtualDiskMomentReport virtualDiskMomentReport_1 = 
-	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque " + name_VirtualDisks[i]));
+	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque {" + name[i] + "}"));
 
 	    ReportMonitor reportMonitor_5 = 
 	      virtualDiskMomentReport_1.createMonitor();
@@ -251,10 +263,10 @@ public class createVirtualDisks extends StarMacro {
 		  
 		virtualDiskForceReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskForceReport_0.setPresentationName("Thrust " + name_VirtualDisks[i]);
+		virtualDiskForceReport_0.setPresentationName("Thrust {" + name[i] + "}");
 
 	    VirtualDiskForceReport virtualDiskForceReport_1 = 
-	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust " + name_VirtualDisks[i]));
+	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust {" + name[i] + "}"));
 
 	    ReportMonitor reportMonitor_6 = 
 	      virtualDiskForceReport_1.createMonitor();
@@ -291,7 +303,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    SimpleCylinderPart simpleCylinderPart_0 = 
 	      meshPartFactory_0.createNewCylinderPart(simulation_0.get(SimulationPartManager.class));
-	      simpleCylinderPart_0.setPresentationName("refine cylinder: " + name_VirtualDisks[i]);
+	      simpleCylinderPart_0.setPresentationName("refine cylinder {" + name[i] + "}");
 
 
 	    simpleCylinderPart_0.setDoNotRetessellate(true);
@@ -301,9 +313,10 @@ public class createVirtualDisks extends StarMacro {
 	    LabCoordinateSystem labCoordinateSystem_0 = 
 	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
+simulation_0.println(name[i] + "-CSys 1");
 	    CartesianCoordinateSystem cartesianCoordinateSystem_1 = 
 	      // ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine  1: cw-CSys 1"));
-	      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name_VirtualDisks[i] + "-CSys 1"));
+	      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
 	      
 	    simpleCylinderPart_0.setCoordinateSystem(cartesianCoordinateSystem_1);
 
@@ -315,7 +328,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    coordinate_5.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 1.0}));
 
-	    coordinate_5.setValue(new DoubleVector(new double[] {0.0, 0.0, -0.5*rotor_radius}));
+	    coordinate_5.setValue(new DoubleVector(new double[] {0.0, 0.0, -0.5*rotor_radius[i]}));
 
 	    // end coordinate
 	    Coordinate coordinate_6 = 
@@ -325,12 +338,12 @@ public class createVirtualDisks extends StarMacro {
 
 	    coordinate_6.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
-	    coordinate_6.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.5*rotor_radius}));
+	    coordinate_6.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.5*rotor_radius[i]}));
 
 	    // radius
 	    simpleCylinderPart_0.getRadius().setUnits(units_2);
 
-	    simpleCylinderPart_0.getRadius().setValue(1.25*rotor_radius);
+	    simpleCylinderPart_0.getRadius().setValue(1.25*rotor_radius[i]);
 
 	    // misc
 	    // simpleCylinderPart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
@@ -355,7 +368,7 @@ public class createVirtualDisks extends StarMacro {
 	    SimpleSpherePart simpleSpherePart_0 = 
 	      meshPartFactory_0.createNewSpherePart(simulation_0.get(SimulationPartManager.class));
 	      
-	    simpleSpherePart_0.setPresentationName("refine sphere: " + name_VirtualDisks[i]);
+	    simpleSpherePart_0.setPresentationName("refine sphere {" + name[i] + "}");
 
 	    simpleSpherePart_0.setDoNotRetessellate(true);
 
@@ -363,8 +376,11 @@ public class createVirtualDisks extends StarMacro {
 	    LabCoordinateSystem labCoordinateSystem_1 = 
 	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
+
+simulation_0.println(name[i] + "-CSys 1");
+
 	    CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
-	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(name_VirtualDisks[i] + "-CSys 1"));
+	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
 	      
 	    simpleSpherePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
 
@@ -383,7 +399,7 @@ public class createVirtualDisks extends StarMacro {
 	    // radius
 	    simpleSpherePart_0.getRadius().setUnits(units_2);
 
-	    simpleSpherePart_0.getRadius().setValue(4.50*rotor_radius);
+	    simpleSpherePart_0.getRadius().setValue(4.50*rotor_radius[i]);
 
 	    
 	    // misc
@@ -408,7 +424,7 @@ public class createVirtualDisks extends StarMacro {
 	    SimpleConePart simpleConePart_0 = 
 	      meshPartFactory_0.createNewConePart(simulation_0.get(SimulationPartManager.class));
 
-	  	simpleConePart_0.setPresentationName("refine cone: " + name_VirtualDisks[i]);
+	  	simpleConePart_0.setPresentationName("refine cone {" + name[i] + "}");
 
 	    simpleConePart_0.setDoNotRetessellate(true);
 
@@ -425,7 +441,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    simpleConePart_0.getStartRadius().setUnits(units_2);
 
-	    simpleConePart_0.getStartRadius().setValue(1.50*rotor_radius);
+	    simpleConePart_0.getStartRadius().setValue(1.50*rotor_radius[i]);
 
 	    Coordinate coordinate_3 = 
 	      simpleConePart_0.getEndCoordinate();
@@ -434,11 +450,11 @@ public class createVirtualDisks extends StarMacro {
 
 	    coordinate_3.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
-	    coordinate_3.setValue(new DoubleVector(new double[] {0.0, 0.0, 20*2*rotor_radius}));
+	    coordinate_3.setValue(new DoubleVector(new double[] {0.0, 0.0, 20*2*rotor_radius[i]}));
 
 	    simpleConePart_0.getEndRadius().setUnits(units_2);
 
-	    simpleConePart_0.getEndRadius().setValue(2.0*rotor_radius);
+	    simpleConePart_0.getEndRadius().setValue(2.0*rotor_radius[i]);
 
 	    // simpleConePart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
 
@@ -461,21 +477,6 @@ public class createVirtualDisks extends StarMacro {
 
 
 
-
-
-// needo something about the Automated Mesh here
-	    // AutoMeshOperation autoMeshOperation_0 = 
-	    //   ((AutoMeshOperation) simulation_0.get(MeshOperationManager.class).getObject("Block"));
-
-// SimpleBlockPart simpleBlockPart_0 = 
-//       ((SimpleBlockPart) simulation_0.get(SimulationPartManager.class).getPart("Block"));
-
-//     AutoMeshOperation autoMeshOperation_0 = 
-//       simulation_0.get(MeshOperationManager.class).createAutoMeshOperation(new StringVector(new String[] {}), new NeoObjectVector(new Object[] {simpleBlockPart_0}));
-
-AutoMeshOperation autoMeshOperation_0 = 
-      ((AutoMeshOperation) simulation_0.get(MeshOperationManager.class).getObject("Automated Mesh"));
-
 //            __ _              _____       _ _           _           
 //           / _(_)            /  __ \     | (_)         | |          
 //  _ __ ___| |_ _ _ __   ___  | /  \/_   _| |_ _ __   __| | ___ _ __ 
@@ -489,7 +490,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    VolumeCustomMeshControl volumeCustomMeshControl_2 = 
 	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	      volumeCustomMeshControl_2.setPresentationName("refine cylinder: " + name_VirtualDisks[i]);
+	      volumeCustomMeshControl_2.setPresentationName("refine cylinder {" + name[i] + "}");
 
 	      volumeCustomMeshControl_2.getGeometryObjects().setObjects(simpleCylinderPart_0);
 
@@ -508,7 +509,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    GenericAbsoluteSize genericAbsoluteSize_2 = 
 	      ((GenericAbsoluteSize) volumeControlSize_2.getAbsoluteSize());
 
-	    genericAbsoluteSize_2.getValue().setValue(0.20*rotor_radius);
+	    genericAbsoluteSize_2.getValue().setValue(0.20*rotor_radius[i]);
 
 
 //            __ _              _____       _                   
@@ -527,7 +528,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    VolumeCustomMeshControl volumeCustomMeshControl_3 = 
 	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	    volumeCustomMeshControl_3.setPresentationName("refine sphere: " + name_VirtualDisks[i]);
+	    volumeCustomMeshControl_3.setPresentationName("refine sphere {" + name[i] + "}");
 
 	    volumeCustomMeshControl_3.getGeometryObjects().setObjects(simpleSpherePart_0);
 
@@ -544,7 +545,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    GenericAbsoluteSize genericAbsoluteSize_3 = 
 	      ((GenericAbsoluteSize) volumeControlSize_3.getAbsoluteSize());
 
-	    genericAbsoluteSize_3.getValue().setValue(0.40*rotor_radius);
+	    genericAbsoluteSize_3.getValue().setValue(0.40*rotor_radius[i]);
 
 //            __ _              _____ _____ _   _  _____ 
 //           / _(_)            /  __ \  _  | \ | ||  ___|
@@ -557,7 +558,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    VolumeCustomMeshControl volumeCustomMeshControl_0 = 
 	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-		volumeCustomMeshControl_0.setPresentationName("refine cone: " + name_VirtualDisks[i]);
+		volumeCustomMeshControl_0.setPresentationName("refine cone {" + name[i] + "}");
 
 	    volumeCustomMeshControl_0.getGeometryObjects().setObjects(simpleConePart_0);
 
@@ -575,7 +576,7 @@ AutoMeshOperation autoMeshOperation_0 =
 	    GenericAbsoluteSize genericAbsoluteSize_1 = 
 	      ((GenericAbsoluteSize) volumeControlSize_1.getAbsoluteSize());
 
-	    genericAbsoluteSize_1.getValue().setValue(0.40*rotor_radius);
+	    genericAbsoluteSize_1.getValue().setValue(0.40*rotor_radius[i]);
 
 
 
@@ -619,7 +620,7 @@ AutoMeshOperation autoMeshOperation_0 =
 			    ThresholdPart thresholdPart_0 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_0, 0);
 
-			    thresholdPart_0.setPresentationName(name_VirtualDisks[i]);
+			    thresholdPart_0.setPresentationName(name[i]);
 
 
 			    PrimitiveFieldFunction primitiveFieldFunction_1 = 
@@ -631,7 +632,7 @@ AutoMeshOperation autoMeshOperation_0 =
 			    ThresholdPart thresholdPart_1 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_1, 0);
 
-			    thresholdPart_1.setPresentationName("inflow " + name_VirtualDisks[i]);
+			    thresholdPart_1.setPresentationName("inflow {" + name[i] + "}");
 
 
 			    ///////////////////////////////////////////////////////////////////////////////
@@ -654,16 +655,36 @@ AutoMeshOperation autoMeshOperation_0 =
 
 			    volumeAverageReport_0.getParts().setObjects(thresholdPart_1);
 
-			    volumeAverageReport_0.setPresentationName("volume avg. inflow " + name_VirtualDisks[i]);
+			    volumeAverageReport_0.setPresentationName("volume avg. inflow {" + name[i] + "}");
 
 
 			    VolumeAverageReport volumeAverageReport_1 = 
-			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow " + name_VirtualDisks[i]));
+			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow {" + name[i] + "}"));
 
 			    ReportMonitor reportMonitor_0 = 
 				  volumeAverageReport_1.createMonitor();
 
 		} // end FOR loop
+		// everyline above here WORKS...
+
+		// okay try this next ONE line ...  THE PROBLEM IS HERE ... JUST FUKIN FIXED IT
+		ReportMonitor reportMonitor_0 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[0] + "} Monitor"));
+          // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(name[0]));
+
+	    MonitorPlot monitorPlot_0 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {turbine 1} Monitor Plot");
+
+	    monitorPlot_0.setPresentationName("rotors-inflow");
+
+	    for (int i = 1; i < nVirtualDisks; i++) {
+            ReportMonitor reportMonitor_n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[i] + "} Monitor"));
+              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(name_VirtualDisks.get(i)));
+
+            monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_n}));
+        }
 
 		
   } // end execute0()

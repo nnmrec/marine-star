@@ -73,7 +73,8 @@ starSimFile="Mezzanine_v0.sim"
 
 starMacros="macros/main.java"
 
-myPODkey="r7L8XXSBzQYnzS/zQEZ6Jw"
+# for security, keep the key as your environmental variables (dont write in this file!)
+#myPODkey="asdfasdfasdfasdf"
 
 ## KEEP copy of the initial cleared solution (small file size), rename file used for restart after checkpointing (this file gets big) 
 cp --no-clobber $starSimFile runs.$starSimFile
