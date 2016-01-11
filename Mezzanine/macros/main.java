@@ -132,8 +132,6 @@ public class main extends StarMacro {
     // update and print Scenes
     // new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
 
-    // }
-
 
 
 

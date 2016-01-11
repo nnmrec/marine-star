@@ -665,25 +665,42 @@ simulation_0.println(name[i] + "-CSys 1");
 				  volumeAverageReport_1.createMonitor();
 
 		} // end FOR loop
-		// everyline above here WORKS...
 
-		// okay try this next ONE line ...  THE PROBLEM IS HERE ... JUST FUKIN FIXED IT
 		ReportMonitor reportMonitor_0 = 
 		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[0] + "} Monitor"));
-          // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(name[0]));
-
 	    MonitorPlot monitorPlot_0 = 
 	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
-	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {turbine 1} Monitor Plot");
-
 	    monitorPlot_0.setPresentationName("rotors-inflow");
 
-	    for (int i = 1; i < nVirtualDisks; i++) {
-            ReportMonitor reportMonitor_n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[i] + "} Monitor"));
-              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor(name_VirtualDisks.get(i)));
 
-            monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_n}));
+	    ReportMonitor reportMonitor_1 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[0] + "} Monitor"));
+	    MonitorPlot monitorPlot_1 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	    monitorPlot_1.setPresentationName("rotors-thrust");
+
+
+	    ReportMonitor reportMonitor_2 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[0] + "} Monitor"));
+	    MonitorPlot monitorPlot_2 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	    monitorPlot_2.setPresentationName("rotors-torque");
+
+
+
+	    for (int i = 1; i < nVirtualDisks; i++) {
+            ReportMonitor reportMonitor_0n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[i] + "} Monitor"));
+            monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_0n}));
+
+            ReportMonitor reportMonitor_1n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[i] + "} Monitor"));
+            monitorPlot_1.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_1n}));
+
+            ReportMonitor reportMonitor_2n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + name[i] + "} Monitor"));
+            monitorPlot_2.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_2n}));
+
         }
 
 		

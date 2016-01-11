@@ -22,37 +22,6 @@ public class updateVirtualDisks extends StarMacro {
     //
     // path to CSV file with names and coordinates of point probes (this gets updated from the "mooring model" code) This file should NOT have any empty lines at bottom 
     String path1     = "inputs/rotors.csv";
-
-
-///////////////////////////////////////////////////////////////////////////////
-    // USER INPUTS
-    // 
-    // static final int    nVirtualDisks   = 9;        // turbine specifications
-    // static final double hub_radius      = 1.0;      
-    // static final double rotor_radius    = 12.5;
-    // static final double rotor_thick     = 2.0;
-    // static final double rotor_spacing    = 28.0;
-    // static final double rotor_height     = 30.0;
-    // static final double rotor_rpm       = 11.5;
-    // static final double nx              = 1.0;
-    // static final double ny              = 0.0;
-    // static final double nz              = 0.0;
-    // double[][] coords_VirtualDisks = new double[][]
-    // {
-    //     {187.5,   100, 44.5},
-    //     {187.5,   175, 44.5},
-    //     {187.5,   250, 44.5},
-    //     {187.5,   325, 44.5},
-    //     {187.5,   400, 44.5},
-    //     {  375, 137.5, 44.5},
-    //     {  375, 212.5, 44.5},
-    //     {  375, 287.5, 44.5},
-    //     {  375, 362.5, 44.5}
-    // };
-
-    // "the name of the File Table should also be a user input, each disk can have its own table, or use a duplicate"
-    // table [U P Ct] for: TSR 
-
     ///////////////////////////////////////////////////////////////////////////////
 
     public void execute() {

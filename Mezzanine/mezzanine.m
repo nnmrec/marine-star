@@ -115,7 +115,8 @@ fileIn_probes  = [dir_input filesep 'probes.csv'];
 fileIn_rotors  = [dir_input filesep 'rotors.csv'];             
 fileOut_probes = [dir_output filesep 'probes-velocity.csv'];
 fileOut_rotors = [dir_output filesep 'rotors-velocity.csv'];  
-
+fileOut_thrust = [dir_output filesep 'rotors-thrust.csv'];  
+fileOut_torque = [dir_output filesep 'rotors-torque.csv'];  
       
 %% write the initial conditions to "input files" for the CFD model  
 % construct the cell array
@@ -166,7 +167,7 @@ for k = 1:couplingIters
     % horzcat(probes_name, num2cell(probes.vel))
 
 
-    % ROTORS: read/process the file header
+    % ROTOR INFLOW SPEEDS: read/process the file header
     fid = fopen(fileOut_rotors, 'r');
     header = fgetl(fid);
     fclose(fid);
@@ -182,6 +183,40 @@ for k = 1:couplingIters
     rotors.vel = rotors.vel(end,2:end)';    % only keep last iteration
     % actually this appears to be in proper order! yay!
     % horzcat(rotors_name, num2cell(rotors.vel))
+    
+    % ROTOR THRUST: read/process the file header
+    fid = fopen(fileOut_thrust, 'r');
+    header = fgetl(fid);
+    fclose(fid);
+    cols        = strsplit(header,',');
+    rotors_name = cell(size(cols,2)-1, 1);
+    for n = 2:size(cols,2)
+        token            = strtok(cols(n), '}');
+        [token, remain]  = strtok(token, '{');
+        rotors_name{n-1} = remain{1}(2:end);
+    end
+    % read the data section
+    rotors.thrust = csvread(fileOut_thrust,1);
+    rotors.thrust = rotors.thrust(end,2:end)';    % only keep last iteration
+    % actually this appears to be in proper order! yay!
+    % horzcat(rotors_name, num2cell(rotors.thrust))
+    
+    % ROTOR TORQUE: read/process the file header
+    fid = fopen(fileOut_torque, 'r');
+    header = fgetl(fid);
+    fclose(fid);
+    cols        = strsplit(header,',');
+    rotors_name = cell(size(cols,2)-1, 1);
+    for n = 2:size(cols,2)
+        token            = strtok(cols(n), '}');
+        [token, remain]  = strtok(token, '{');
+        rotors_name{n-1} = remain{1}(2:end);
+    end
+    % read the data section
+    rotors.torque = csvread(fileOut_torque,1);
+    rotors.torque = rotors.torque(end,2:end)';    % only keep last iteration
+    % actually this appears to be in proper order! yay!
+    % horzcat(rotors_name, num2cell(rotors.torque))
 
 
     %% run the mooring model to calculate new positions
