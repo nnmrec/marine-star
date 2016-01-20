@@ -64,12 +64,13 @@
 ## --------------------------------------------------------
 # module load contrib/starccm_10.06.009-R8
 module load contrib/starccm_10.06.009-R8
+module load matlab_2015b
 
 
 ## -------------------------------------------------------- 
 ## Specify the applications to run here
 ## -------------------------------------------------------- 
-starSimFile="Mezzanine_v0.sim"
+starSimFile="Mezzanine_v1.sim"
 
 starMacros="macros/main.java"
 
@@ -82,4 +83,5 @@ rm log.$starSimFile
 # rm *.sim~
 
 ## RUN my simulation file in batch mode
-starccm+ -batch $starMacros -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 1999@login3.hyak.local -power -podkey $myPODkey -batch-report runs.$starSimFile 2>&1 | tee log.$starSimFile
+#starccm+ -batch $starMacros -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 1999@login3.hyak.local -power -podkey $myPODkey -batch-report runs.$starSimFile 2>&1 | tee log.$starSimFile
+matlab -nodisplay -nojvm < mezzanine.m
