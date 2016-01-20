@@ -36,13 +36,13 @@ f.close();
 
 %% run the CFD model for first time
 % run STAR-CCM+
-if runOnHPC
-    system('./submit-job-Hyak.sh');
-else
+%if runOnHPC
+%    system('./submit-job-Hyak.sh');
+%else
     system(['cp ' starSimFile ' runs.' starSimFile]);
     system(['rm log.' starSimFile]);
     system(['starccm+ -batch macros/main.java -np ' num2str(nCPUs) ' -licpath 1999@flex.cd-adapco.com -power -podkey $myPODkey -batch-report runs.' starSimFile ' 2>&1 | tee log.' starSimFile]);
-end
+%end
 
 
 couplingIters = 1;

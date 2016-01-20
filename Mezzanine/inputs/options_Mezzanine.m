@@ -1,8 +1,8 @@
 %% set the initial conditions for the "Mezzanine"
 OPTIONS = [];
 starSimFile = 'Mezzanine_v1.sim';
-runOnHPC    = false;
-nCPUs       = 4;
+runOnHPC    = true;
+nCPUs       = 16;
 
 % coordinates of turbines (center of rotor), and other properties
 rotors.names  = {'row-1_turbine-1'; ...
