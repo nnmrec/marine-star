@@ -5,8 +5,8 @@
 ##       qsub <script.sh>
 ##
 ## #PBS is a directive requesting job scheduling resources
-## and ALL PBS directives must be at the top of the script, 
-## standard bash commands can follow afterwards. 
+## and ALL PBS directives must be at the top of the script,
+## standard bash commands can follow afterwards.
 ## --------------------------------------------------------
 
 ## --------------------------------------------------------
@@ -43,8 +43,8 @@
 ## --------------------------------------------------------
 ## LOG the (stderr and stdout) job output in the directory
 ## --------------------------------------------------------
-## PBS -j oe -o /gscratch/motley/dsale/job_output/logs
-#PBS -j oe -o /gscratch/stf/dsale/job_output/logs
+#PBS -j oe -o /gscratch/motley/dsale/job_output/logs
+## PBS -j oe -o /gscratch/stf/dsale/job_output/logs
 
 
 ## --------------------------------------------------------
@@ -67,23 +67,20 @@ module load contrib/starccm_10.06.009-R8
 module load matlab_2015b
 
 
-## -------------------------------------------------------- 
+## --------------------------------------------------------
 ## Specify the applications to run here
-## -------------------------------------------------------- 
+## --------------------------------------------------------
 starSimFile="Mezzanine_v1.sim"
-
 starMacros="macros/main.java"
 
 # for security, keep the key as your environmental variables (dont write in this file!)
 #myPODkey="asdfasdfasdfasdf"
 
-## KEEP copy of the initial cleared solution (small file size), rename file used for restart after checkpointing (this file gets big) 
+## KEEP copy of the initial cleared solution (small file size), rename file used for restart after checkpointing (this file gets big)
 cp --no-clobber $starSimFile runs.$starSimFile
 rm log.$starSimFile
 # rm *.sim~
 
 ## RUN my simulation file in batch mode
-#starccm+ -batch $starMacros -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 1999@login3.hyak.local -power -podkey $myPODkey -batch-report runs.$starSimFile 2>&1 | tee 
-log.$starSimFile
+#starccm+ -batch $starMacros -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 1999@login3.hyak.local -power -podkey $myPODkey -batch-report runs.$starSimFile 2>&1 | tee log.$starSimFile
 matlab -nodisplay -nojvm < mezzanine.m
-
