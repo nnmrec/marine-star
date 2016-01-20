@@ -45,7 +45,7 @@ else
 end
 
 
-couplingIters = 2;
+couplingIters = 1;
 for k = 1:couplingIters
     %% read the "output files" of the CFD model
 
