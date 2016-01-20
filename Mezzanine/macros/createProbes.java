@@ -23,7 +23,6 @@ public class createProbes extends StarMacro {
     //
     // path to CSV file with names and coordinates of point probes (this gets updated from the "mooring model" code) This file should NOT have any empty lines at bottom 
     String path0    = "inputs/probes.csv";
-    String region   = "Block";                  // Default name of the region is "Block". not really a user input ... hardcoded everywhere else
 
     ///////////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +31,7 @@ public class createProbes extends StarMacro {
         Simulation simulation_0 = getActiveSimulation();
 
         Region region_0 =
-                simulation_0.getRegionManager().getRegion(region);
+                simulation_0.getRegionManager().getRegion("Block");
 
 
         File f = new File(path0);

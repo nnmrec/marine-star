@@ -10,21 +10,75 @@ import java.util.*;
 import star.common.*;
 import star.base.neo.*;
 import star.vis.*;
+import java.io.*;
+import java.util.logging.*;
 
 public class createScenes extends StarMacro {
+
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // USER INPUTS (all these user inputs should be read from a CSV file instead)
+  String path0    = "inputs/rotors.csv";
+  ///////////////////////////////////////////////////////////////////////////////
 
   public void execute() {
     execute0();
   }
 
   private void execute0() {
+        
 
-    Simulation simulation_0 = 
-      getActiveSimulation();
-
-
+      Simulation simulation_0 = 
+        getActiveSimulation();
       Region region_0 = 
       simulation_0.getRegionManager().getRegion("Block");
+
+
+        //
+        int       nVirtualDisks   = 0;
+        List<String>  textline    = new ArrayList<String>();
+
+
+        File f = new File(path0);
+        try {
+
+            FileReader  fr   = new FileReader(f);
+            Scanner     sc   = new Scanner(fr);
+            String      line = "";
+            
+            Integer nLines = new Integer(0);
+            while (sc.hasNextLine()) {
+                // this skips the header line
+                if(nLines == 0) {
+                   nLines = nLines + 1;
+                   sc.nextLine();
+                   continue;
+                }
+                nLines = nLines + 1;
+                line = sc.nextLine();
+                textline.add(line);
+            }
+            nVirtualDisks = nLines - 1;          
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(createScenes.class.getName()).log(Level.SEVERE, null, ex);
+        } // end try
+
+      simulation_0.println("DEBUG 0: nVirtualDisks = " + nVirtualDisks);
+
+      String[] name = new String[nVirtualDisks];
+      for (int i = 0; i < nVirtualDisks; i++) {
+        name[i] = textline.get(i).split(",")[0];
+      }
+      String[] name_VirtualDiskMarker             = new String[nVirtualDisks];
+      String[] name_VirtualDiskInflowPlaneMarker  = new String[nVirtualDisks];
+      for (int j = 0; j < nVirtualDisks; j++) {
+        // I think these are not connected to the "name" ... they will always be named in order of creation
+        name_VirtualDiskMarker[j]            = "VirtualDiskMarker" + (j+1);
+        name_VirtualDiskInflowPlaneMarker[j] = "VirtualDiskInflowPlaneMarker" + (j+1);
+        }
+
+
 
 
 
@@ -37,7 +91,8 @@ public class createScenes extends StarMacro {
       simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
     CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
-      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine-01-CSys 1"));
+      // ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine-01-CSys 1"));
+      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name[0] + "-CSys 1"));
 
     planeSection_3.setCoordinateSystem(cartesianCoordinateSystem_0);
 

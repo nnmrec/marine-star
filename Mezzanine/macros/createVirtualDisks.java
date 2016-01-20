@@ -313,7 +313,6 @@ public class createVirtualDisks extends StarMacro {
 	    LabCoordinateSystem labCoordinateSystem_0 = 
 	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
-simulation_0.println(name[i] + "-CSys 1");
 	    CartesianCoordinateSystem cartesianCoordinateSystem_1 = 
 	      // ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine  1: cw-CSys 1"));
 	      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
@@ -363,51 +362,51 @@ simulation_0.println(name[i] + "-CSys 1");
 //  \___|_|  \___|\__,_|\__\___| \____/| .__/|_| |_|\___|_|  \___| 
 //                                     | |                         
 //                                     |_|                         
-	    ///////////////////////////////////////////////////////////////////////////////
-	    // SPHERE create the Shape Part
-	    SimpleSpherePart simpleSpherePart_0 = 
-	      meshPartFactory_0.createNewSpherePart(simulation_0.get(SimulationPartManager.class));
+// 	    ///////////////////////////////////////////////////////////////////////////////
+// 	    // SPHERE create the Shape Part
+// 	    SimpleSpherePart simpleSpherePart_0 = 
+// 	      meshPartFactory_0.createNewSpherePart(simulation_0.get(SimulationPartManager.class));
 	      
-	    simpleSpherePart_0.setPresentationName("refine sphere {" + name[i] + "}");
+// 	    simpleSpherePart_0.setPresentationName("refine sphere {" + name[i] + "}");
 
-	    simpleSpherePart_0.setDoNotRetessellate(true);
+// 	    simpleSpherePart_0.setDoNotRetessellate(true);
 
-	    // coordinate system - attach to the Virtual Disk coordinate system
-	    LabCoordinateSystem labCoordinateSystem_1 = 
-	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
+// 	    // coordinate system - attach to the Virtual Disk coordinate system
+// 	    LabCoordinateSystem labCoordinateSystem_1 = 
+// 	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
 
-simulation_0.println(name[i] + "-CSys 1");
+// simulation_0.println(name[i] + "-CSys 1");
 
-	    CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
-	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
+// 	    CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
+// 	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
 	      
-	    simpleSpherePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
+// 	    simpleSpherePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
 
 
-	    // origin
-	    Coordinate coordinate_9 = 
-	      simpleSpherePart_0.getOrigin();
+// 	    // origin
+// 	    Coordinate coordinate_9 = 
+// 	      simpleSpherePart_0.getOrigin();
 
-	    coordinate_9.setCoordinateSystem(cartesianCoordinateSystem_0);
+// 	    coordinate_9.setCoordinateSystem(cartesianCoordinateSystem_0);
 
-	    coordinate_9.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
+// 	    coordinate_9.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
-	    coordinate_9.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.0}));
+// 	    coordinate_9.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
 	    
-	    // radius
-	    simpleSpherePart_0.getRadius().setUnits(units_2);
+// 	    // radius
+// 	    simpleSpherePart_0.getRadius().setUnits(units_2);
 
-	    simpleSpherePart_0.getRadius().setValue(4.50*rotor_radius[i]);
+// 	    simpleSpherePart_0.getRadius().setValue(4.50*rotor_radius[i]);
 
 	    
-	    // misc
-	    // simpleSpherePart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
+// 	    // misc
+// 	    // simpleSpherePart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
 
-	    simpleSpherePart_0.rebuildSimpleShapePart();
+// 	    simpleSpherePart_0.rebuildSimpleShapePart();
 
-	    // simpleSpherePart_0.setDoNotRetessellate(false);
+// 	    // simpleSpherePart_0.setDoNotRetessellate(false);
 
 	    
 
@@ -419,48 +418,48 @@ simulation_0.println(name[i] + "-CSys 1");
 // //  \___|_|  \___|\__,_|\__\___|  \____/\___/\_| \_/\____/ 
                                                         
                                                         
-	    ///////////////////////////////////////////////////////////////////////////////
-	    // CONE create the Shape Part
-	    SimpleConePart simpleConePart_0 = 
-	      meshPartFactory_0.createNewConePart(simulation_0.get(SimulationPartManager.class));
+	   //  ///////////////////////////////////////////////////////////////////////////////
+	   //  // CONE create the Shape Part
+	   //  SimpleConePart simpleConePart_0 = 
+	   //    meshPartFactory_0.createNewConePart(simulation_0.get(SimulationPartManager.class));
 
-	  	simpleConePart_0.setPresentationName("refine cone {" + name[i] + "}");
+	  	// simpleConePart_0.setPresentationName("refine cone {" + name[i] + "}");
 
-	    simpleConePart_0.setDoNotRetessellate(true);
+	   //  simpleConePart_0.setDoNotRetessellate(true);
 
-	    simpleConePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
+	   //  simpleConePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
 
-	    Coordinate coordinate_2 = 
-	      simpleConePart_0.getStartCoordinate();
+	   //  Coordinate coordinate_2 = 
+	   //    simpleConePart_0.getStartCoordinate();
 
-	    coordinate_2.setCoordinateSystem(cartesianCoordinateSystem_0);
+	   //  coordinate_2.setCoordinateSystem(cartesianCoordinateSystem_0);
 
-	    coordinate_2.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 1.0}));
+	   //  coordinate_2.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 1.0}));
 
-	    coordinate_2.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.0}));
+	   //  coordinate_2.setValue(new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
-	    simpleConePart_0.getStartRadius().setUnits(units_2);
+	   //  simpleConePart_0.getStartRadius().setUnits(units_2);
 
-	    simpleConePart_0.getStartRadius().setValue(1.50*rotor_radius[i]);
+	   //  simpleConePart_0.getStartRadius().setValue(1.50*rotor_radius[i]);
 
-	    Coordinate coordinate_3 = 
-	      simpleConePart_0.getEndCoordinate();
+	   //  Coordinate coordinate_3 = 
+	   //    simpleConePart_0.getEndCoordinate();
 
-	    coordinate_3.setCoordinateSystem(cartesianCoordinateSystem_0);
+	   //  coordinate_3.setCoordinateSystem(cartesianCoordinateSystem_0);
 
-	    coordinate_3.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
+	   //  coordinate_3.setCoordinate(units_2, units_2, units_2, new DoubleVector(new double[] {0.0, 0.0, 0.0}));
 
-	    coordinate_3.setValue(new DoubleVector(new double[] {0.0, 0.0, 20*2*rotor_radius[i]}));
+	   //  coordinate_3.setValue(new DoubleVector(new double[] {0.0, 0.0, 20*2*rotor_radius[i]}));
 
-	    simpleConePart_0.getEndRadius().setUnits(units_2);
+	   //  simpleConePart_0.getEndRadius().setUnits(units_2);
 
-	    simpleConePart_0.getEndRadius().setValue(2.0*rotor_radius[i]);
+	   //  simpleConePart_0.getEndRadius().setValue(2.0*rotor_radius[i]);
 
-	    // simpleConePart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
+	   //  // simpleConePart_0.getTessellationDensityOption().setSelected(TessellationDensityOption.MEDIUM);
 
-	    simpleConePart_0.rebuildSimpleShapePart();
+	   //  simpleConePart_0.rebuildSimpleShapePart();
 
-	    // simpleConePart_0.setDoNotRetessellate(false);
+	   //  // simpleConePart_0.setDoNotRetessellate(false);
 
 	    
 
@@ -509,7 +508,7 @@ simulation_0.println(name[i] + "-CSys 1");
 	    GenericAbsoluteSize genericAbsoluteSize_2 = 
 	      ((GenericAbsoluteSize) volumeControlSize_2.getAbsoluteSize());
 
-	    genericAbsoluteSize_2.getValue().setValue(0.20*rotor_radius[i]);
+	    genericAbsoluteSize_2.getValue().setValue(rotor_radius[i]/20);
 
 
 //            __ _              _____       _                   
@@ -525,27 +524,27 @@ simulation_0.println(name[i] + "-CSys 1");
 	    // AutoMeshOperation autoMeshOperation_1 = 
 	    //   ((AutoMeshOperation) simulation_0.get(MeshOperationManager.class).getObject("Block"));
 
-	    VolumeCustomMeshControl volumeCustomMeshControl_3 = 
-	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
+	    // VolumeCustomMeshControl volumeCustomMeshControl_3 = 
+	    //   autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	    volumeCustomMeshControl_3.setPresentationName("refine sphere {" + name[i] + "}");
+	    // volumeCustomMeshControl_3.setPresentationName("refine sphere {" + name[i] + "}");
 
-	    volumeCustomMeshControl_3.getGeometryObjects().setObjects(simpleSpherePart_0);
+	    // volumeCustomMeshControl_3.getGeometryObjects().setObjects(simpleSpherePart_0);
 
-	    VolumeControlTrimmerSizeOption volumeControlTrimmerSizeOption_3 = 
-	      volumeCustomMeshControl_3.getCustomConditions().get(VolumeControlTrimmerSizeOption.class);
+	    // VolumeControlTrimmerSizeOption volumeControlTrimmerSizeOption_3 = 
+	    //   volumeCustomMeshControl_3.getCustomConditions().get(VolumeControlTrimmerSizeOption.class);
 
-	    volumeControlTrimmerSizeOption_3.setVolumeControlBaseSizeOption(true);
+	    // volumeControlTrimmerSizeOption_3.setVolumeControlBaseSizeOption(true);
 
-	    VolumeControlSize volumeControlSize_3 = 
-	      volumeCustomMeshControl_3.getCustomValues().get(VolumeControlSize.class);
+	    // VolumeControlSize volumeControlSize_3 = 
+	    //   volumeCustomMeshControl_3.getCustomValues().get(VolumeControlSize.class);
 
-	    volumeControlSize_3.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.ABSOLUTE);
+	    // volumeControlSize_3.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.ABSOLUTE);
 
-	    GenericAbsoluteSize genericAbsoluteSize_3 = 
-	      ((GenericAbsoluteSize) volumeControlSize_3.getAbsoluteSize());
+	    // GenericAbsoluteSize genericAbsoluteSize_3 = 
+	    //   ((GenericAbsoluteSize) volumeControlSize_3.getAbsoluteSize());
 
-	    genericAbsoluteSize_3.getValue().setValue(0.40*rotor_radius[i]);
+	    // genericAbsoluteSize_3.getValue().setValue(0.40*rotor_radius[i]);
 
 //            __ _              _____ _____ _   _  _____ 
 //           / _(_)            /  __ \  _  | \ | ||  ___|
@@ -555,28 +554,28 @@ simulation_0.println(name[i] + "-CSys 1");
 // |_|  \___|_| |_|_| |_|\___|  \____/\___/\_| \_/\____/ 
 		///////////////////////////////////////////////////////////////////////////
 	    // CONE create a volumentric mesh control, add Shape Parts
-	    VolumeCustomMeshControl volumeCustomMeshControl_0 = 
-	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
+	 //    VolumeCustomMeshControl volumeCustomMeshControl_0 = 
+	 //      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-		volumeCustomMeshControl_0.setPresentationName("refine cone {" + name[i] + "}");
+		// volumeCustomMeshControl_0.setPresentationName("refine cone {" + name[i] + "}");
 
-	    volumeCustomMeshControl_0.getGeometryObjects().setObjects(simpleConePart_0);
+	 //    volumeCustomMeshControl_0.getGeometryObjects().setObjects(simpleConePart_0);
 
 
-	    VolumeControlTrimmerSizeOption volumeControlTrimmerSizeOption_0 = 
-	      volumeCustomMeshControl_0.getCustomConditions().get(VolumeControlTrimmerSizeOption.class);
+	 //    VolumeControlTrimmerSizeOption volumeControlTrimmerSizeOption_0 = 
+	 //      volumeCustomMeshControl_0.getCustomConditions().get(VolumeControlTrimmerSizeOption.class);
 
-	    volumeControlTrimmerSizeOption_0.setVolumeControlBaseSizeOption(true);
+	 //    volumeControlTrimmerSizeOption_0.setVolumeControlBaseSizeOption(true);
 
-	    VolumeControlSize volumeControlSize_1 = 
-	      volumeCustomMeshControl_0.getCustomValues().get(VolumeControlSize.class);
+	 //    VolumeControlSize volumeControlSize_1 = 
+	 //      volumeCustomMeshControl_0.getCustomValues().get(VolumeControlSize.class);
 
-	    volumeControlSize_1.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.ABSOLUTE);
+	 //    volumeControlSize_1.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.ABSOLUTE);
 
-	    GenericAbsoluteSize genericAbsoluteSize_1 = 
-	      ((GenericAbsoluteSize) volumeControlSize_1.getAbsoluteSize());
+	 //    GenericAbsoluteSize genericAbsoluteSize_1 = 
+	 //      ((GenericAbsoluteSize) volumeControlSize_1.getAbsoluteSize());
 
-	    genericAbsoluteSize_1.getValue().setValue(0.40*rotor_radius[i]);
+	 //    genericAbsoluteSize_1.getValue().setValue(0.40*rotor_radius[i]);
 
 
 

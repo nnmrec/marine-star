@@ -38,7 +38,7 @@ public class createMeshBackground extends StarMacro {
   // USER INPUTS
   //
   static final double diameter_rotor 	        = 25;		  // rotor diameter [m]
-  static final double depth                   = 60;     // length in z-dimention (vertical) [m]  
+  // static final double depth                   = 60;     // length in z-dimention (vertical) [m]  
   static final double core_baseSize           = 25.0;   // base size of core mesh [m]
   static final double core_sizeSurface        = 5.55;   // surface size of core mesh [m]
   static final double core_maxSize            = 30.0;   // max size of cells in the core mes
