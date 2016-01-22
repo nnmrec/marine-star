@@ -37,11 +37,11 @@ public class createMeshBackground extends StarMacro {
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
   //
-  static final double diameter_rotor 	        = 25;		  // rotor diameter [m]
+  static final double diameter_rotor          = 25;     // rotor diameter [m]
   // static final double depth                   = 60;     // length in z-dimention (vertical) [m]  
   static final double core_baseSize           = 25.0;   // base size of core mesh [m]
-  static final double core_sizeSurface        = 5.55;   // surface size of core mesh [m]
-  static final double core_maxSize            = 30.0;   // max size of cells in the core mes
+  static final double core_sizeSurface        = 8.00;   // surface size of core mesh [m]
+  static final double core_maxSize            = 50.0;   // max size of cells in the core mes
   // static final double core_growthSurface      = '';     // growth rate from surfaces
   // static final double core_growthBase         = '';     // growth rate within core meshh
   static final int    prism_numLayers         = 10;     // number prism layers
@@ -60,12 +60,12 @@ public class createMeshBackground extends StarMacro {
 
   private void execute0() {
 
-	  Simulation simulation_0 = 
-	    getActiveSimulation();
+    Simulation simulation_0 = 
+      getActiveSimulation();
 
-  	///////////////////////////////////////////////////////////////////////////////
-  	// create the "background" Mesh
-  	//
+    ///////////////////////////////////////////////////////////////////////////////
+    // create the "background" Mesh
+    //
     SimpleBlockPart simpleBlockPart_0 = 
       ((SimpleBlockPart) simulation_0.get(SimulationPartManager.class).getPart("Block"));
 

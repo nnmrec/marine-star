@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: prepareAMR.java
+// STAR-CCM+ macro: refineMesh_level0.java
 // Written by STAR-CCM+ 10.04.009
 package macro;
 
@@ -10,7 +10,7 @@ import star.trimmer.*;
 import star.meshing.*;
 import star.base.report.*;
 
-public class prepareAMR extends StarMacro {
+public class refineMesh_level0 extends StarMacro {
 
   public void execute() {
     execute0();
@@ -51,55 +51,23 @@ public class prepareAMR extends StarMacro {
 
 
 
-
-
-    UserFieldFunction userFieldFunction_10 = 
-      simulation_0.getFieldFunctionManager().createFieldFunction();
-
-    userFieldFunction_10.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
-
-    userFieldFunction_10.setPresentationName("Turbulence Intensity (local)");
-
-    userFieldFunction_10.setDefinition("sqrt(2*$TurbulentKineticEnergy/3)/mag($$Velocity)");
-
-    userFieldFunction_10.setIgnoreBoundaryValues(true);
-
-    userFieldFunction_10.setFunctionName("local TI");
-
-
-      
-    AreaAverageReport areaAverageReport_0 = 
-      simulation_0.getReportManager().createReport(AreaAverageReport.class);
-
-    areaAverageReport_0.setPresentationName("inlet surface avg TI");
-
-    areaAverageReport_0.setScalar(userFieldFunction_10);
-
-    areaAverageReport_0.getParts().setObjects(boundary_0);
-
-    areaAverageReport_0.printReport();
-
-
-
-
     UserFieldFunction userFieldFunction_99 = 
       simulation_0.getFieldFunctionManager().createFieldFunction();
 
     userFieldFunction_99.getTypeOption().setSelected(FieldFunctionTypeOption.SCALAR);
 
-    userFieldFunction_99.setPresentationName("Turbulence Intensity Ratio");
+    userFieldFunction_99.setPresentationName("cell size for refinement (TI ratio)");
 
-    userFieldFunction_99.setFunctionName("Turbulence Intensity Ratio");
+    userFieldFunction_99.setFunctionName("cell size for refinement (TI ratio)");
 
-    userFieldFunction_99.setDefinition("${local TI}/${inletsurfaceavgTIReport}");
-    // userFieldFunction_99.setDefinition("(sqrt(2*$TurbulentKineticEnergy/3)/(mag($$Velocity))) / 0.1");
+    userFieldFunction_99.setDefinition("${Turbulence Intensity Ratio} > 1.5 ? 4:0");
 
     userFieldFunction_99.setIgnoreBoundaryValues(true);
 
     XyzInternalTable xyzInternalTable_99 = 
       simulation_0.getTableManager().createTable(XyzInternalTable.class);
 
-    xyzInternalTable_99.setPresentationName("Turbulence Intensity Ratio Function Table");
+    xyzInternalTable_99.setPresentationName("refine Turbulence Intensity Ratio Function Table");
 
     xyzInternalTable_99.setFieldFunctions(new NeoObjectVector(new Object[] {userFieldFunction_99}));
   

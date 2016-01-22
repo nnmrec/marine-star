@@ -47,7 +47,7 @@ public class refineMesh extends StarMacro {
 
     // solution_0.clearSolution(Solution.Clear.History, Solution.Clear.Fields);
 
-    simulation_0.getSimulationIterator().run();
+    // simulation_0.getSimulationIterator().run();
 
 
 

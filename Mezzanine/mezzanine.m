@@ -1,8 +1,12 @@
+% function mezzanine(optionsFile)
+optionsFile = 'options.Mezzanine_small.m';      % name of options file (this is echoed into "options.m")
+% optionsFile = 'options.Mezzanine.m';            % name of options file (this is echoed into "options.m")
+
 %% STARTUP - add any dependencies to the path and read/initialize "user inputs"
 addpath(genpath([pwd filesep 'utilities']));
 
 % read the main user options (note: some of the java macros also have "user inputs")
-[OPTIONS,filesIO,probes,rotors] = initMain();
+[OPTIONS,filesIO,probes,rotors] = initMain(optionsFile);
 
 %% WRITE the initial conditions to "input files" for the CFD model 
 writeInputsProbes(filesIO,probes);
@@ -25,7 +29,7 @@ for k = 1:OPTIONS.nUpdateMooring
                 rotors = updateRotorSpeeds(OPTIONS,filesIO,rotors);
                 
                 % need to update the stopping criteria
-%                 tol = tol / 2;
+                updateSolverCFD(OPTIONS);
                 
                 % now can run STAR-CCM+ again with updated inputs
                 runSTARCCM(OPTIONS,'updateAndRun.java');
@@ -50,11 +54,10 @@ hold on; plot(n, rotors.data(:,1), 'o-r')
     % WRITE the updated xyz coordinates for next iteration of CFD model
     probes.xyz         = new_xyz.probes;
     rotors.data(:,2:4) = new_xyz.rotors;
-    writeInputs(filesIO,probes,rotors);
+    writeInputsProbes(filesIO,probes);
+    writeInputsRotors(filesIO,rotors);
 
 end
-
-
 
     
 

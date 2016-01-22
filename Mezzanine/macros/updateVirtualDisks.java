@@ -21,7 +21,7 @@ public class updateVirtualDisks extends StarMacro {
     // USER INPUTS
     //
     // path to CSV file with names and coordinates of point probes (this gets updated from the "mooring model" code) This file should NOT have any empty lines at bottom 
-    String path1     = "inputs/rotors.csv";
+    String path1     = "outputs/rotors.csv";
     ///////////////////////////////////////////////////////////////////////////////
 
     public void execute() {

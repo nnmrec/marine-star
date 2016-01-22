@@ -28,7 +28,7 @@ public class createVirtualDisks extends StarMacro {
 
 	///////////////////////////////////////////////////////////////////////////////
 	// USER INPUTS (all these user inputs should be read from a CSV file instead)
-	String path0    = "inputs/rotors.csv";
+	String path0    = "outputs/rotors.csv";
 	///////////////////////////////////////////////////////////////////////////////
 
 	public void execute() {

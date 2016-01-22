@@ -85,35 +85,10 @@ public class main extends StarMacro {
 
   private void execute0() {
 
-  	new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("createPhysics.java"))).play();
-
-    new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("createPartsAndRegionsBC.java"))).play();
-
-    new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("createMeshBackground.java"))).play();
-
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("meshAndSave.java"))).play();
-
-	  new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("createVirtualDisks.java"))).play();
-
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createProbes.java"))).play();
-
-	  new StarScript(getActiveSimulation(),	new java.io.File(resolvePath("meshAndSave.java"))).play();
-
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("prepareAMR.java"))).play();
-
-    
-
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
-    
-    
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh_level0.java"))).play();
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
-
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_defaultLayout.java"))).play();
-        
-
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh_level0.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("remeshAMR.java"))).play();
 
 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
