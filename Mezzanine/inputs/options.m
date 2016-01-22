@@ -1,7 +1,7 @@
 %% set the initial conditions for the "Mezzanine"
 OPTIONS.starSimFile      = 'Mezzanine_v1.sim';          % name of empty STAR-CCM+ sim file
 OPTIONS.runOnHPC         = true;                        % option to run a PBS script for HPC systems (like Hyak), or run locally
-OPTIONS.nCPUs            = 6;                           % number of CPU cores to run in parallel (check that it matches your PBS submit job script)
+OPTIONS.nCPUs            = 24;                           % number of CPU cores to run in parallel (check that it matches your PBS submit job script)
 OPTIONS.control          = 'RPM';                       % choose 'RPM' for rotor speed control.  choose 'TSR' for local tip-speed-ratio control
 OPTIONS.nUpdateRPM       = 2;                           % number of inner loops to update the rotor speed based on inflow velocity, should be 1 or greater (this options is probably dependent on max iterations of RANS model)
 OPTIONS.nUpdateMooring   = 1;                           % number of times to iterate between CFD and Mooring models

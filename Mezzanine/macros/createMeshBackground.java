@@ -50,8 +50,8 @@ public class createMeshBackground extends StarMacro {
   static final double prism_thicknessNeighbor = 2.0;    // multiplier of core mesh size to last prism layer [ratio of 2 to Inf]
   static final double custom_seabedSize       = 6.66;   // target cell size on seabed
   // static final double custom_seabedGrowth     = '';     // growth rate from seabed surface
-  static final int    iter_max                = 100;     // stop after this many iterations
-  static final double limit_continuity        = 1e-1;   // stop when residual of continuity reaches this value
+  static final int    iter_max                = 1000;     // stop after this many iterations
+  static final double limit_continuity        = 1e-5;   // stop when residual of continuity reaches this value
   ///////////////////////////////////////////////////////////////////////////////
 
   public void execute() {

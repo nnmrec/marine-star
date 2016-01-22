@@ -18,6 +18,9 @@ runSTARCCM(OPTIONS,'main.java');
 %% READ the output from the CFD model
 [probes, rotors] = readOutputs(filesIO,probes,rotors);
         
+%% do mesh refinement
+runSTARCCM(OPTIONS,'remeshAMR.java');
+
 %% ITERATE between running the CFD and Mooring models
 for k = 1:OPTIONS.nUpdateMooring
     

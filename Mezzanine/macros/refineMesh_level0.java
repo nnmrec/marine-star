@@ -60,7 +60,7 @@ public class refineMesh_level0 extends StarMacro {
 
     userFieldFunction_99.setFunctionName("cell size for refinement (TI ratio)");
 
-    userFieldFunction_99.setDefinition("${Turbulence Intensity Ratio} > 1.5 ? 4:0");
+    userFieldFunction_99.setDefinition("(${Turbulence Intensity Ratio} > 1.5) ? 4:0");
 
     userFieldFunction_99.setIgnoreBoundaryValues(true);
 
