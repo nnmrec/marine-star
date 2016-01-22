@@ -50,8 +50,8 @@ public class createMeshBackground extends StarMacro {
   static final double prism_thicknessNeighbor = 2.0;    // multiplier of core mesh size to last prism layer [ratio of 2 to Inf]
   static final double custom_seabedSize       = 6.66;   // target cell size on seabed
   // static final double custom_seabedGrowth     = '';     // growth rate from seabed surface
-  static final int    iter_max                = 1000;     // stop after this many iterations
-  static final double limit_continuity        = 1e-2;   // stop when residual of continuity reaches this value
+  static final int    iter_max                = 100;     // stop after this many iterations
+  static final double limit_continuity        = 1e-1;   // stop when residual of continuity reaches this value
   ///////////////////////////////////////////////////////////////////////////////
 
   public void execute() {
@@ -244,17 +244,29 @@ public class createMeshBackground extends StarMacro {
 
     stepStoppingCriterion_0.setMaximumNumberSteps(iter_max);
 
+    // stepStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.AND);
+    stepStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.OR);
+
     ResidualMonitor residualMonitor_0 = 
       ((ResidualMonitor) simulation_0.getMonitorManager().getMonitor("Continuity"));
 
     MonitorIterationStoppingCriterion monitorIterationStoppingCriterion_0 = 
       residualMonitor_0.createIterationStoppingCriterion();
 
-    MonitorIterationStoppingCriterionMinLimitType monitorIterationStoppingCriterionMinLimitType_0 = 
-      ((MonitorIterationStoppingCriterionMinLimitType) monitorIterationStoppingCriterion_0.getCriterionType());
+    // monitorIterationStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.AND);
+      monitorIterationStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.OR);
+    // monitorIterationStoppingCriterion_0.setOuterIterationCriterion(false);
+    monitorIterationStoppingCriterion_0.setOuterIterationCriterion(true);
 
-    monitorIterationStoppingCriterionMinLimitType_0.getLimit().setValue(limit_continuity);
+// 
 
+    MonitorIterationStoppingCriterion monitorIterationStoppingCriterion_1 = 
+      ((MonitorIterationStoppingCriterion) simulation_0.getSolverStoppingCriterionManager().getSolverStoppingCriterion("Continuity Criterion"));
+
+    MonitorIterationStoppingCriterionMinLimitType monitorIterationStoppingCriterionMinLimitType_1 = 
+      ((MonitorIterationStoppingCriterionMinLimitType) monitorIterationStoppingCriterion_1.getCriterionType());
+
+    monitorIterationStoppingCriterionMinLimitType_1.getLimit().setValue(limit_continuity);
 
 
   } // end execute0()

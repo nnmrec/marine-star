@@ -1,5 +1,6 @@
 # ignore big starccm+ files
 *.sim~
+*.m~
 runs.*
 
 # ignore generated log files and html files

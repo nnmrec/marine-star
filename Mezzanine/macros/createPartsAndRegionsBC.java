@@ -33,7 +33,7 @@ public class createPartsAndRegionsBC extends StarMacro {
 	// USER INPUTS
 	//
 	static final double length 				= 2000;	// length in x-dimention (steamwise) [m]
-	static final double width 				= 1000;		// length in y-dimention (crossflow) [m]
+	static final double width 				= 500;		// length in y-dimention (crossflow) [m]
 	static final double depth 				= 60;		// length in z-dimention (vertical) [m]
 	static final double bc_TI 				= 0.1; 		// turbulence intensity for inlet and outlet TI = u' / U [unitless]
 	static final double bc_Lturb 			= 3.125; 	// turbulent length scale for inlet and outlet [m]

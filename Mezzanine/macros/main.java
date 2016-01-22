@@ -76,7 +76,7 @@ public class main extends StarMacro {
 
   ///////////////////////////////////////////////////////////////////////////////
   // USER INPUTS
-  static final int refinementLevels = 1;    // number of times to adaptively refine the CFD mesh upon initial solution
+
   ///////////////////////////////////////////////////////////////////////////////
 
   public void execute() {
@@ -101,52 +101,22 @@ public class main extends StarMacro {
 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
 
-// newSize = [1.5 1.25 1.1]
-// threshold = [1.1 1.2 1.3]
-    // ADAPTIVE MESH REFINEMENT
-    // if (refinementLevels > 0){ 
-        // run the level-0 mesh to convergence
-        new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
 
-        new StarScript(getActiveSimulation(), new java.io.File(resolvePath("prepareAMR.java"))).play();
-        // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
-        // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMeshAgain.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("prepareAMR.java"))).play();
 
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();
+
+
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_defaultLayout.java"))).play();
+    
         
-        
-        // // iterate refine and run
-        // for (int j = 0; j < refinementLevels; j++) {  
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
 
-        //   new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
-        //   new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMeshAgain.java"))).play();
-
-        //   // // update the field function regarding threshold for adaptive-mesh-refinement 
-        //   // // update field function to compute new cell sizes
-        //   // // extract the table for cell sizes, load the table in mesh table refiment, save mesh
-        //   // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMeshAdaptive.java"))).play();
-          
-        //   // // update the mesh, which uses the mesh refinement table defined above
-        //   // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("meshAndSave.java"))).play();
-        //   // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
-
-    //     }
-    // }       
-
-    // run the simulation to its stopping criteria (number iterations set inside this macro)
-    // this run.java macro fails because it does not conintue running ... need to update the max iterations before running again
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
-   
-    // extract probe data, then update probe coordinates [flag to skip the update step]
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("exportProbes.java"))).play();
    
-    // extract Virtual Disk data, then update the Virtual Disks [flag to skip the update step]
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("exportVirtualDisks.java"))).play();
 
-    // update and print Scenes
-    // new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("screensUpdateAndPrint.java"))).play();
-
-
-
+    // new StarScript(getActiveSimulation(),  new java.io.File(resolvePath("exportScenes.java"))).play();
 
   } // end execute0()
 } // end public class

@@ -66,9 +66,12 @@ public class createScenes extends StarMacro {
 
       simulation_0.println("DEBUG 0: nVirtualDisks = " + nVirtualDisks);
 
-      String[] name = new String[nVirtualDisks];
+      List<String>  names   = new ArrayList<String>();
+      // String[] name = new String[nVirtualDisks];
       for (int i = 0; i < nVirtualDisks; i++) {
-        name[i] = textline.get(i).split(",")[0];
+        String name = textline.get(i).split(",")[0];
+        names.add(name);
+        // name[i] = textline.get(i).split(",")[0];
       }
       String[] name_VirtualDiskMarker             = new String[nVirtualDisks];
       String[] name_VirtualDiskInflowPlaneMarker  = new String[nVirtualDisks];
@@ -76,7 +79,7 @@ public class createScenes extends StarMacro {
         // I think these are not connected to the "name" ... they will always be named in order of creation
         name_VirtualDiskMarker[j]            = "VirtualDiskMarker" + (j+1);
         name_VirtualDiskInflowPlaneMarker[j] = "VirtualDiskInflowPlaneMarker" + (j+1);
-        }
+      }
 
 
 
@@ -90,9 +93,10 @@ public class createScenes extends StarMacro {
     LabCoordinateSystem labCoordinateSystem_0 = 
       simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
+      simulation_0.println("DEBUG 00: name = " + names.get(0));
     CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
       // ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine-01-CSys 1"));
-      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name[0] + "-CSys 1"));
+      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(names.get(1) + "-CSys 1"));
 
     planeSection_3.setCoordinateSystem(cartesianCoordinateSystem_0);
 
@@ -230,9 +234,7 @@ public class createScenes extends StarMacro {
 
     scalarDisplayer_2.getScalarDisplayQuantity().setClip(0);
 
-    scalarDisplayer_2.getScalarDisplayQuantity().setRange(new DoubleVector(new double[] {0.9, 1.1177028869556351}));
-
-    scalarDisplayer_2.getScalarDisplayQuantity().setRange(new DoubleVector(new double[] {0.9, 1.1}));
+    scalarDisplayer_2.getScalarDisplayQuantity().setRange(new DoubleVector(new double[] {0.5, 1.5}));
 
     Legend legend_2 = 
       scalarDisplayer_2.getLegend();

@@ -77,9 +77,12 @@ public class createVirtualDisks extends StarMacro {
             Logger.getLogger(createVirtualDisks.class.getName()).log(Level.SEVERE, null, ex);
         } // end try
 
-      simulation_0.println("DEBUG 0: nVirtualDisks = " + nVirtualDisks);
+// DEBUG
+simulation_0.println("nVirtualDisks = " + nVirtualDisks);
 
-      String[] name        	= new String[nVirtualDisks];
+      List<String>	names   = new ArrayList<String>();
+      // ArrayList<String> names = new ArrayList<String>();
+      // String[] name        	= new String[nVirtualDisks];
       String[] table       	= new String[nVirtualDisks];
       double[] rotor_rpm	= new double[nVirtualDisks];
       double[] x 			= new double[nVirtualDisks];
@@ -92,7 +95,12 @@ public class createVirtualDisks extends StarMacro {
       double[] hub_radius	= new double[nVirtualDisks];
       double[] rotor_thick	= new double[nVirtualDisks];
       for (int i = 0; i < nVirtualDisks; i++) {
-      	name[i]			= textline.get(i).split(",")[0];
+      	
+      	String name = textline.get(i).split(",")[0];
+        names.add(name);
+//DEBUG
+simulation_0.println("name = " + names.get(i));        
+      	// name[i]			= textline.get(i).split(",")[0];
       	table[i]		= textline.get(i).split(",")[1];
       	rotor_rpm[i] 	= Double.parseDouble(textline.get(i).split(",")[2]);
       	x[i]			= Double.parseDouble(textline.get(i).split(",")[3]);
@@ -137,7 +145,7 @@ public class createVirtualDisks extends StarMacro {
 	      physicsContinuum_0.getModelManager().getModel(VirtualDiskModel.class);
 
 	    VirtualDisk virtualDisk_0 = 
-	      virtualDiskModel_0.getVirtualDiskManager().createDisk(name[i]);
+	      virtualDiskModel_0.getVirtualDiskManager().createDisk(names.get(i));
 
       	virtualDisk_0.setDisplaySourceTerm(true);
 
@@ -249,10 +257,10 @@ public class createVirtualDisks extends StarMacro {
 
       	virtualDiskMomentReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskMomentReport_0.setPresentationName("Torque {" + name[i] + "}");
+		virtualDiskMomentReport_0.setPresentationName("Torque {" + names.get(i) + "}");
 
 	    VirtualDiskMomentReport virtualDiskMomentReport_1 = 
-	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque {" + name[i] + "}"));
+	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque {" + names.get(i) + "}"));
 
 	    ReportMonitor reportMonitor_5 = 
 	      virtualDiskMomentReport_1.createMonitor();
@@ -263,10 +271,10 @@ public class createVirtualDisks extends StarMacro {
 		  
 		virtualDiskForceReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskForceReport_0.setPresentationName("Thrust {" + name[i] + "}");
+		virtualDiskForceReport_0.setPresentationName("Thrust {" + names.get(i) + "}");
 
 	    VirtualDiskForceReport virtualDiskForceReport_1 = 
-	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust {" + name[i] + "}"));
+	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust {" + names.get(i) + "}"));
 
 	    ReportMonitor reportMonitor_6 = 
 	      virtualDiskForceReport_1.createMonitor();
@@ -303,7 +311,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    SimpleCylinderPart simpleCylinderPart_0 = 
 	      meshPartFactory_0.createNewCylinderPart(simulation_0.get(SimulationPartManager.class));
-	      simpleCylinderPart_0.setPresentationName("refine cylinder {" + name[i] + "}");
+	      simpleCylinderPart_0.setPresentationName("refine cylinder {" + names.get(i) + "}");
 
 
 	    simpleCylinderPart_0.setDoNotRetessellate(true);
@@ -315,7 +323,7 @@ public class createVirtualDisks extends StarMacro {
 
 	    CartesianCoordinateSystem cartesianCoordinateSystem_1 = 
 	      // ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject("turbine  1: cw-CSys 1"));
-	      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
+	      ((CartesianCoordinateSystem) labCoordinateSystem_0.getLocalCoordinateSystemManager().getObject(names.get(i) + "-CSys 1"));
 	      
 	    simpleCylinderPart_0.setCoordinateSystem(cartesianCoordinateSystem_1);
 
@@ -367,7 +375,7 @@ public class createVirtualDisks extends StarMacro {
 // 	    SimpleSpherePart simpleSpherePart_0 = 
 // 	      meshPartFactory_0.createNewSpherePart(simulation_0.get(SimulationPartManager.class));
 	      
-// 	    simpleSpherePart_0.setPresentationName("refine sphere {" + name[i] + "}");
+// 	    simpleSpherePart_0.setPresentationName("refine sphere {" + names.get(i) + "}");
 
 // 	    simpleSpherePart_0.setDoNotRetessellate(true);
 
@@ -376,10 +384,10 @@ public class createVirtualDisks extends StarMacro {
 // 	      simulation_0.getCoordinateSystemManager().getLabCoordinateSystem();
 
 
-// simulation_0.println(name[i] + "-CSys 1");
+// simulation_0.println(names.get(i) + "-CSys 1");
 
 // 	    CartesianCoordinateSystem cartesianCoordinateSystem_0 = 
-// 	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(name[i] + "-CSys 1"));
+// 	      ((CartesianCoordinateSystem) labCoordinateSystem_1.getLocalCoordinateSystemManager().getObject(names.get(i) + "-CSys 1"));
 	      
 // 	    simpleSpherePart_0.setCoordinateSystem(cartesianCoordinateSystem_0);
 
@@ -423,7 +431,7 @@ public class createVirtualDisks extends StarMacro {
 	   //  SimpleConePart simpleConePart_0 = 
 	   //    meshPartFactory_0.createNewConePart(simulation_0.get(SimulationPartManager.class));
 
-	  	// simpleConePart_0.setPresentationName("refine cone {" + name[i] + "}");
+	  	// simpleConePart_0.setPresentationName("refine cone {" + names.get(i) + "}");
 
 	   //  simpleConePart_0.setDoNotRetessellate(true);
 
@@ -489,7 +497,7 @@ public class createVirtualDisks extends StarMacro {
 	    VolumeCustomMeshControl volumeCustomMeshControl_2 = 
 	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	      volumeCustomMeshControl_2.setPresentationName("refine cylinder {" + name[i] + "}");
+	      volumeCustomMeshControl_2.setPresentationName("refine cylinder {" + names.get(i) + "}");
 
 	      volumeCustomMeshControl_2.getGeometryObjects().setObjects(simpleCylinderPart_0);
 
@@ -527,7 +535,7 @@ public class createVirtualDisks extends StarMacro {
 	    // VolumeCustomMeshControl volumeCustomMeshControl_3 = 
 	    //   autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	    // volumeCustomMeshControl_3.setPresentationName("refine sphere {" + name[i] + "}");
+	    // volumeCustomMeshControl_3.setPresentationName("refine sphere {" + names.get(i) + "}");
 
 	    // volumeCustomMeshControl_3.getGeometryObjects().setObjects(simpleSpherePart_0);
 
@@ -557,7 +565,7 @@ public class createVirtualDisks extends StarMacro {
 	 //    VolumeCustomMeshControl volumeCustomMeshControl_0 = 
 	 //      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-		// volumeCustomMeshControl_0.setPresentationName("refine cone {" + name[i] + "}");
+		// volumeCustomMeshControl_0.setPresentationName("refine cone {" + names.get(i) + "}");
 
 	 //    volumeCustomMeshControl_0.getGeometryObjects().setObjects(simpleConePart_0);
 
@@ -619,7 +627,7 @@ public class createVirtualDisks extends StarMacro {
 			    ThresholdPart thresholdPart_0 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_0, 0);
 
-			    thresholdPart_0.setPresentationName(name[i]);
+			    thresholdPart_0.setPresentationName(names.get(i));
 
 
 			    PrimitiveFieldFunction primitiveFieldFunction_1 = 
@@ -631,7 +639,7 @@ public class createVirtualDisks extends StarMacro {
 			    ThresholdPart thresholdPart_1 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_1, 0);
 
-			    thresholdPart_1.setPresentationName("inflow {" + name[i] + "}");
+			    thresholdPart_1.setPresentationName("inflow {" + names.get(i) + "}");
 
 
 			    ///////////////////////////////////////////////////////////////////////////////
@@ -654,11 +662,12 @@ public class createVirtualDisks extends StarMacro {
 
 			    volumeAverageReport_0.getParts().setObjects(thresholdPart_1);
 
-			    volumeAverageReport_0.setPresentationName("volume avg. inflow {" + name[i] + "}");
+				// volumeAverageReport_0.setPresentationName("volume avg. inflow");		
+			    volumeAverageReport_0.setPresentationName("volume avg. inflow {" + names.get(i) + "}");
 
 
 			    VolumeAverageReport volumeAverageReport_1 = 
-			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow {" + name[i] + "}"));
+			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow {" + names.get(i) + "}"));
 
 			    ReportMonitor reportMonitor_0 = 
 				  volumeAverageReport_1.createMonitor();
@@ -666,38 +675,44 @@ public class createVirtualDisks extends StarMacro {
 		} // end FOR loop
 
 		ReportMonitor reportMonitor_0 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[0] + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + names.get(0) + "} Monitor"));
 	    MonitorPlot monitorPlot_0 = 
-	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {" + names.get(0) + "} Monitor Plot");
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow");
 	    monitorPlot_0.setPresentationName("rotors-inflow");
 
 
 	    ReportMonitor reportMonitor_1 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[0] + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + names.get(0) + "} Monitor"));
 	    MonitorPlot monitorPlot_1 = 
-	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "thrust {" + names.get(0) + "} Monitor Plot");
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "thrust");
 	    monitorPlot_1.setPresentationName("rotors-thrust");
 
 
 	    ReportMonitor reportMonitor_2 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[0] + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + names.get(0) + "} Monitor"));
 	    MonitorPlot monitorPlot_2 = 
-	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "volume avg. inflow {" + name[0] + "} Monitor Plot");
+	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "torque {" + names.get(0) + "} Monitor Plot");
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "torque");
 	    monitorPlot_2.setPresentationName("rotors-torque");
 
 
 
 	    for (int i = 1; i < nVirtualDisks; i++) {
             ReportMonitor reportMonitor_0n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + name[i] + "} Monitor"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + names.get(i) + "} Monitor"));
+              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow"));
             monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_0n}));
 
             ReportMonitor reportMonitor_1n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + name[i] + "} Monitor"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + names.get(i) + "} Monitor"));
+              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust"));
             monitorPlot_1.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_1n}));
 
             ReportMonitor reportMonitor_2n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + name[i] + "} Monitor"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + names.get(i) + "} Monitor"));
+              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque"));
             monitorPlot_2.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_2n}));
 
         }

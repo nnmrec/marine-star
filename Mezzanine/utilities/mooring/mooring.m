@@ -7,7 +7,9 @@ xyz_probes = probes.xyz;
 xyz_rotors = rotors.data(:,2:4);
 
 % for now just move the coordinates randomly, to demostrate the code works
-new_xyz.probes = xyz_probes + 5*rand(size(xyz_probes));
-new_xyz.rotors = xyz_rotors + 5*rand(size(xyz_rotors));
+new_xyz.probes = xyz_probes;
+new_xyz.rotors = xyz_rotors;
+% new_xyz.probes = xyz_probes + 5*rand(size(xyz_probes));
+% new_xyz.rotors = xyz_rotors + 5*rand(size(xyz_rotors));
 
 end % function
