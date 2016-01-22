@@ -6,12 +6,13 @@ function [probes, rotors] = readOutputs(filesIO,probes,rotors)
     fid = fopen(filesIO.fileOut_probes, 'r');
     header = fgetl(fid);
     fclose(fid);
+
     cols        = strsplit(header,',');
     probes_name = cell(size(cols,2)-1, 1);
     for n = 2:size(cols,2)
         token            = strtok(cols(n), ':');
-        var              = token{1}(2:end);
-        probes_name{n-1} = var;
+        varname          = token{1}(2:end);
+        probes_name{n-1} = varname;
     end
     % read the data section
     probes.vel = csvread(filesIO.fileOut_probes,1);
