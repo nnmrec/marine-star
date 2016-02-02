@@ -92,7 +92,6 @@ public class prepareAMR extends StarMacro {
     userFieldFunction_99.setFunctionName("Turbulence Intensity Ratio");
 
     userFieldFunction_99.setDefinition("${local TI}/${inletsurfaceavgTIReport}");
-    // userFieldFunction_99.setDefinition("(sqrt(2*$TurbulentKineticEnergy/3)/(mag($$Velocity))) / 0.1");
 
     userFieldFunction_99.setIgnoreBoundaryValues(true);
 

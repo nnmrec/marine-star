@@ -11,6 +11,8 @@ import java.util.logging.*;
 import star.common.*;
 import star.base.neo.*;
 import star.vdm.*;
+import star.base.report.*;
+
 
 import star.vis.*;
 
@@ -82,6 +84,13 @@ public class updateVirtualDisks extends StarMacro {
             simulation_0.println("Virtual Disk '" + name + "' updated coordinates (" + x + "," + y + "," + z + ")");
 
             simulation_0.println("Virtual Disk '" + name + "' updated rotor speed (" + rpm + ")");
+
+
+// simulation_0.println("\"" + Double.toString(rpm) + "\""); 
+            ExpressionReport expressionReport_0 = 
+              ((ExpressionReport) simulation_0.getReportManager().getReport("Rotor Speed (" + name + ")"));
+            expressionReport_0.setDefinition(Double.toString(rpm));
+            // expressionReport_0.setDefinition("\"" + Double.toString(rpm) + "\"");
 
 
 

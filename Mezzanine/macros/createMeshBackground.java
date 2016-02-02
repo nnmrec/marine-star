@@ -34,240 +34,202 @@ import star.meshing.*;
 
 public class createMeshBackground extends StarMacro {
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // USER INPUTS
-  //
-  static final double diameter_rotor          = 25;     // rotor diameter [m]
-  // static final double depth                   = 60;     // length in z-dimention (vertical) [m]  
-  static final double core_baseSize           = 25.0;   // base size of core mesh [m]
-  static final double core_sizeSurface        = 8.00;   // surface size of core mesh [m]
-  static final double core_maxSize            = 50.0;   // max size of cells in the core mes
-  // static final double core_growthSurface      = '';     // growth rate from surfaces
-  // static final double core_growthBase         = '';     // growth rate within core meshh
-  static final int    prism_numLayers         = 10;     // number prism layers
-  static final double prism_wallThickness     = 0.02;   // thickness of the first prism cell on the wall [m]
-  static final double prism_thickness         = 3.33;   // thickness of entire prism layer [m]
-  static final double prism_thicknessNeighbor = 2.0;    // multiplier of core mesh size to last prism layer [ratio of 2 to Inf]
-  static final double custom_seabedSize       = 6.66;   // target cell size on seabed
-  // static final double custom_seabedGrowth     = '';     // growth rate from seabed surface
-  static final int    iter_max                = 1000;     // stop after this many iterations
-  static final double limit_continuity        = 1e-5;   // stop when residual of continuity reaches this value
-  ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// USER INPUTS
+//
+static final double diameter_rotor          = 25;     // rotor diameter [m]
+// static final double depth                   = 60;     // length in z-dimention (vertical) [m]  
+static final double core_baseSize           = 25.0;   // base size of core mesh [m]
+static final double core_sizeSurface        = 8.00;   // surface size of core mesh [m]
+static final double core_maxSize            = 50.0;   // max size of cells in the core mes
+// static final double core_growthSurface      = '';     // growth rate from surfaces
+// static final double core_growthBase         = '';     // growth rate within core meshh
+static final int    prism_numLayers         = 10;     // number prism layers
+static final double prism_wallThickness     = 0.02;   // thickness of the first prism cell on the wall [m]
+static final double prism_thickness         = 3.33;   // thickness of entire prism layer [m]
+static final double prism_thicknessNeighbor = 2.0;    // multiplier of core mesh size to last prism layer [ratio of 2 to Inf]
+static final double custom_seabedSize       = 6.66;   // target cell size on seabed
+// static final double custom_seabedGrowth     = '';     // growth rate from seabed surface
+// static final int    iter_max                = 333;
+// static final double limit_continuity        = 1e-05;
+///////////////////////////////////////////////////////////////////////////////
 
-  public void execute() {
-    execute0();
-  }
+public void execute() {
+execute0();
+}
 
-  private void execute0() {
+private void execute0() {
 
-    Simulation simulation_0 = 
-      getActiveSimulation();
+Simulation simulation_0 = 
+getActiveSimulation();
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // create the "background" Mesh
-    //
-    SimpleBlockPart simpleBlockPart_0 = 
-      ((SimpleBlockPart) simulation_0.get(SimulationPartManager.class).getPart("Block"));
+///////////////////////////////////////////////////////////////////////////////
+// create the "background" Mesh
+//
+SimpleBlockPart simpleBlockPart_0 = 
+((SimpleBlockPart) simulation_0.get(SimulationPartManager.class).getPart("Block"));
 
-    AutoMeshOperation autoMeshOperation_0 = 
-      simulation_0.get(MeshOperationManager.class).createAutoMeshOperation(new StringVector(new String[] {}), new NeoObjectVector(new Object[] {simpleBlockPart_0}));
+AutoMeshOperation autoMeshOperation_0 = 
+simulation_0.get(MeshOperationManager.class).createAutoMeshOperation(new StringVector(new String[] {}), new NeoObjectVector(new Object[] {simpleBlockPart_0}));
 
-    autoMeshOperation_0.getMeshers().setMeshersByNames(new StringVector(new String[] {"star.trimmer.TrimmerAutoMesher", "star.prismmesher.PrismAutoMesher"}));
+autoMeshOperation_0.getMeshers().setMeshersByNames(new StringVector(new String[] {"star.trimmer.TrimmerAutoMesher", "star.prismmesher.PrismAutoMesher"}));
 
-    autoMeshOperation_0.getMesherParallelModeOption().setSelected(MesherParallelModeOption.Type.PARALLEL);
-    
-    // DEFAULT core mesh settings
-    autoMeshOperation_0.getDefaultValues().get(BaseSize.class).setValue(core_baseSize);
+autoMeshOperation_0.getMesherParallelModeOption().setSelected(MesherParallelModeOption.Type.PARALLEL);
 
-    PartsTargetSurfaceSize partsTargetSurfaceSize_0 = 
-      autoMeshOperation_0.getDefaultValues().get(PartsTargetSurfaceSize.class);
+// DEFAULT core mesh settings
+autoMeshOperation_0.getDefaultValues().get(BaseSize.class).setValue(core_baseSize);
 
-    partsTargetSurfaceSize_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
+PartsTargetSurfaceSize partsTargetSurfaceSize_0 = 
+autoMeshOperation_0.getDefaultValues().get(PartsTargetSurfaceSize.class);
 
-    GenericAbsoluteSize genericAbsoluteSize_0 = 
-      ((GenericAbsoluteSize) partsTargetSurfaceSize_0.getAbsoluteSize());
+partsTargetSurfaceSize_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
 
-    genericAbsoluteSize_0.getValue().setValue(core_sizeSurface);
+GenericAbsoluteSize genericAbsoluteSize_0 = 
+((GenericAbsoluteSize) partsTargetSurfaceSize_0.getAbsoluteSize());
 
+genericAbsoluteSize_0.getValue().setValue(core_sizeSurface);
 
-    PartsSimpleTemplateGrowthRate partsSimpleTemplateGrowthRate_0 = 
-      autoMeshOperation_0.getDefaultValues().get(PartsSimpleTemplateGrowthRate.class);
 
-    partsSimpleTemplateGrowthRate_0.getGrowthRateOption().setSelected(PartsGrowthRateOption.Type.SLOW);
+PartsSimpleTemplateGrowthRate partsSimpleTemplateGrowthRate_0 = 
+autoMeshOperation_0.getDefaultValues().get(PartsSimpleTemplateGrowthRate.class);
 
-    partsSimpleTemplateGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.MEDIUM);
+partsSimpleTemplateGrowthRate_0.getGrowthRateOption().setSelected(PartsGrowthRateOption.Type.SLOW);
 
-    MaximumCellSize maximumCellSize_0 = 
-      autoMeshOperation_0.getDefaultValues().get(MaximumCellSize.class);
+partsSimpleTemplateGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.MEDIUM);
 
-    maximumCellSize_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
+MaximumCellSize maximumCellSize_0 = 
+autoMeshOperation_0.getDefaultValues().get(MaximumCellSize.class);
 
+maximumCellSize_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
 
-    GenericAbsoluteSize genericAbsoluteSize_2 = 
-      ((GenericAbsoluteSize) maximumCellSize_0.getAbsoluteSize());
 
-    genericAbsoluteSize_2.getValue().setValue(core_maxSize);
+GenericAbsoluteSize genericAbsoluteSize_2 = 
+((GenericAbsoluteSize) maximumCellSize_0.getAbsoluteSize());
 
+genericAbsoluteSize_2.getValue().setValue(core_maxSize);
 
-    // DEFAULT prism layer mesher
-    PrismAutoMesher prismAutoMesher_0 = 
-      ((PrismAutoMesher) autoMeshOperation_0.getMeshers().getObject("Prism Layer Mesher"));
-      
-    prismAutoMesher_0.getPrismStretchingOption().setSelected(PrismStretchingOption.Type.WALL_THICKNESS);
 
-    NumPrismLayers numPrismLayers_0 = 
-      autoMeshOperation_0.getDefaultValues().get(NumPrismLayers.class);
+// DEFAULT prism layer mesher
+PrismAutoMesher prismAutoMesher_0 = 
+((PrismAutoMesher) autoMeshOperation_0.getMeshers().getObject("Prism Layer Mesher"));
 
-    numPrismLayers_0.setNumLayers(prism_numLayers);
+prismAutoMesher_0.getPrismStretchingOption().setSelected(PrismStretchingOption.Type.WALL_THICKNESS);
 
-    autoMeshOperation_0.getDefaultValues().get(PrismWallThickness.class).setValue(prism_wallThickness);
+NumPrismLayers numPrismLayers_0 = 
+autoMeshOperation_0.getDefaultValues().get(NumPrismLayers.class);
 
-    PrismThickness prismThickness_0 = 
-      autoMeshOperation_0.getDefaultValues().get(PrismThickness.class);
+numPrismLayers_0.setNumLayers(prism_numLayers);
 
-    prismThickness_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
+autoMeshOperation_0.getDefaultValues().get(PrismWallThickness.class).setValue(prism_wallThickness);
 
-    GenericAbsoluteSize genericAbsoluteSize_1 = 
-      ((GenericAbsoluteSize) prismThickness_0.getAbsoluteSize());
+PrismThickness prismThickness_0 = 
+autoMeshOperation_0.getDefaultValues().get(PrismThickness.class);
 
-    genericAbsoluteSize_1.getValue().setValue(prism_thickness);
+prismThickness_0.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
 
-    MaxTrimmerSizeToPrismThicknessRatio maxTrimmerSizeToPrismThicknessRatio_0 = 
-      autoMeshOperation_0.getDefaultValues().get(MaxTrimmerSizeToPrismThicknessRatio.class);
+GenericAbsoluteSize genericAbsoluteSize_1 = 
+((GenericAbsoluteSize) prismThickness_0.getAbsoluteSize());
 
-    maxTrimmerSizeToPrismThicknessRatio_0.setLimitCellSizeByPrismThickness(true);
+genericAbsoluteSize_1.getValue().setValue(prism_thickness);
 
-    SizeThicknessRatio sizeThicknessRatio_0 = 
-      maxTrimmerSizeToPrismThicknessRatio_0.getSizeThicknessRatio();
+MaxTrimmerSizeToPrismThicknessRatio maxTrimmerSizeToPrismThicknessRatio_0 = 
+autoMeshOperation_0.getDefaultValues().get(MaxTrimmerSizeToPrismThicknessRatio.class);
 
-    sizeThicknessRatio_0.setNeighboringThicknessMultiplier(prism_thicknessNeighbor);
+maxTrimmerSizeToPrismThicknessRatio_0.setLimitCellSizeByPrismThickness(true);
 
+SizeThicknessRatio sizeThicknessRatio_0 = 
+maxTrimmerSizeToPrismThicknessRatio_0.getSizeThicknessRatio();
 
+sizeThicknessRatio_0.setNeighboringThicknessMultiplier(prism_thicknessNeighbor);
 
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // CUSTOM surface controls
-    // 
-    PartSurface partSurface_0 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Inlet"));
 
-    PartSurface partSurface_1 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Left Bank"));
 
-    PartSurface partSurface_2 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Outlet"));
-
-    PartSurface partSurface_3 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Right Bank"));
-
-    PartSurface partSurface_4 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Sea Surface"));
-
-    PartSurface partSurface_5 = 
-      ((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Seabed"));
-
-    // for FREE-SLIP surfaces
-    SurfaceCustomMeshControl surfaceCustomMeshControl_0 = 
-      autoMeshOperation_0.getCustomMeshControls().createSurfaceControl();
-
-    surfaceCustomMeshControl_0.setPresentationName("block surfaces");
-      
-    surfaceCustomMeshControl_0.getGeometryObjects().setQuery(null);
-
-    surfaceCustomMeshControl_0.getGeometryObjects().setObjects(partSurface_0, partSurface_1, partSurface_2, partSurface_3, partSurface_4);
-
-    PartsCustomizePrismMesh partsCustomizePrismMesh_0 = 
-      surfaceCustomMeshControl_0.getCustomConditions().get(PartsCustomizePrismMesh.class);
-
-    partsCustomizePrismMesh_0.getCustomPrismOptions().setSelected(PartsCustomPrismsOption.Type.DISABLE);
-
-
-    // for NO-SLIP surfaces
-    SurfaceCustomMeshControl surfaceCustomMeshControl_1 = 
-      autoMeshOperation_0.getCustomMeshControls().createSurfaceControl();
-
-    surfaceCustomMeshControl_1.setPresentationName("seabed surface");  
-
-    surfaceCustomMeshControl_1.getGeometryObjects().setQuery(null);
-
-    
-
-    surfaceCustomMeshControl_1.getGeometryObjects().setObjects(partSurface_5);
-
-    surfaceCustomMeshControl_1.getCustomConditions().get(PartsTargetSurfaceSizeOption.class).setSelected(PartsTargetSurfaceSizeOption.Type.CUSTOM);
-
-    PartsTargetSurfaceSize partsTargetSurfaceSize_1 = 
-      surfaceCustomMeshControl_1.getCustomValues().get(PartsTargetSurfaceSize.class);
-
-    partsTargetSurfaceSize_1.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
-
-    GenericAbsoluteSize genericAbsoluteSize_3 = 
-      ((GenericAbsoluteSize) partsTargetSurfaceSize_1.getAbsoluteSize());
-
-    genericAbsoluteSize_3.getValue().setValue(custom_seabedSize);
-
-    surfaceCustomMeshControl_1.getCustomConditions().get(PartsCustomSurfaceGrowthRateOption.class).setSelected(PartsCustomSurfaceGrowthRateOption.Type.CUSTOM);
-
-    PartsCustomSimpleSurfaceGrowthRate partsCustomSimpleSurfaceGrowthRate_0 = 
-      surfaceCustomMeshControl_1.getCustomValues().get(PartsCustomSimpleSurfaceGrowthRate.class);
-
-    partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.FAST);
-
-
-    // // ISSUES: here are the commands for growth rates ... figure out tje syntax to use with USER INPUTS
-    // PartsCustomSimpleSurfaceGrowthRate partsCustomSimpleSurfaceGrowthRate_0 = 
-    //   surfaceCustomMeshControl_1.getCustomValues().get(PartsCustomSimpleSurfaceGrowthRate.class);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.DISABLE);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.VERYSLOW);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.SLOW);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.MEDIUM);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.FAST);
-
-    // partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.CUSTOM);
-
-
-    // set some Solutions Stopping Criteria
-
-
-    // set the stopping and convergence criteria
-    StepStoppingCriterion stepStoppingCriterion_0 = 
-      ((StepStoppingCriterion) simulation_0.getSolverStoppingCriterionManager().getSolverStoppingCriterion("Maximum Steps"));
-
-    stepStoppingCriterion_0.setIsUsed(false);
-
-    stepStoppingCriterion_0.setIsUsed(true);
-
-    stepStoppingCriterion_0.setMaximumNumberSteps(iter_max);
-
-    // stepStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.AND);
-    stepStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.OR);
-
-    ResidualMonitor residualMonitor_0 = 
-      ((ResidualMonitor) simulation_0.getMonitorManager().getMonitor("Continuity"));
-
-    MonitorIterationStoppingCriterion monitorIterationStoppingCriterion_0 = 
-      residualMonitor_0.createIterationStoppingCriterion();
-
-    // monitorIterationStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.AND);
-      monitorIterationStoppingCriterion_0.getLogicalOption().setSelected(SolverStoppingCriterionLogicalOption.Type.OR);
-    // monitorIterationStoppingCriterion_0.setOuterIterationCriterion(false);
-    monitorIterationStoppingCriterion_0.setOuterIterationCriterion(true);
-
+///////////////////////////////////////////////////////////////////////////////
+// CUSTOM surface controls
 // 
+PartSurface partSurface_0 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Inlet"));
 
-    MonitorIterationStoppingCriterion monitorIterationStoppingCriterion_1 = 
-      ((MonitorIterationStoppingCriterion) simulation_0.getSolverStoppingCriterionManager().getSolverStoppingCriterion("Continuity Criterion"));
+PartSurface partSurface_1 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Left Bank"));
 
-    MonitorIterationStoppingCriterionMinLimitType monitorIterationStoppingCriterionMinLimitType_1 = 
-      ((MonitorIterationStoppingCriterionMinLimitType) monitorIterationStoppingCriterion_1.getCriterionType());
+PartSurface partSurface_2 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Outlet"));
 
-    monitorIterationStoppingCriterionMinLimitType_1.getLimit().setValue(limit_continuity);
+PartSurface partSurface_3 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Right Bank"));
+
+PartSurface partSurface_4 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Sea Surface"));
+
+PartSurface partSurface_5 = 
+((PartSurface) simpleBlockPart_0.getPartSurfaceManager().getPartSurface("Seabed"));
+
+// for FREE-SLIP surfaces
+SurfaceCustomMeshControl surfaceCustomMeshControl_0 = 
+autoMeshOperation_0.getCustomMeshControls().createSurfaceControl();
+
+surfaceCustomMeshControl_0.setPresentationName("block surfaces");
+
+surfaceCustomMeshControl_0.getGeometryObjects().setQuery(null);
+
+surfaceCustomMeshControl_0.getGeometryObjects().setObjects(partSurface_0, partSurface_1, partSurface_2, partSurface_3, partSurface_4);
+
+PartsCustomizePrismMesh partsCustomizePrismMesh_0 = 
+surfaceCustomMeshControl_0.getCustomConditions().get(PartsCustomizePrismMesh.class);
+
+partsCustomizePrismMesh_0.getCustomPrismOptions().setSelected(PartsCustomPrismsOption.Type.DISABLE);
 
 
-  } // end execute0()
+// for NO-SLIP surfaces
+SurfaceCustomMeshControl surfaceCustomMeshControl_1 = 
+autoMeshOperation_0.getCustomMeshControls().createSurfaceControl();
+
+surfaceCustomMeshControl_1.setPresentationName("seabed surface");  
+
+surfaceCustomMeshControl_1.getGeometryObjects().setQuery(null);
+
+
+
+surfaceCustomMeshControl_1.getGeometryObjects().setObjects(partSurface_5);
+
+surfaceCustomMeshControl_1.getCustomConditions().get(PartsTargetSurfaceSizeOption.class).setSelected(PartsTargetSurfaceSizeOption.Type.CUSTOM);
+
+PartsTargetSurfaceSize partsTargetSurfaceSize_1 = 
+surfaceCustomMeshControl_1.getCustomValues().get(PartsTargetSurfaceSize.class);
+
+partsTargetSurfaceSize_1.getRelativeOrAbsoluteOption().setSelected(RelativeOrAbsoluteOption.Type.ABSOLUTE);
+
+GenericAbsoluteSize genericAbsoluteSize_3 = 
+((GenericAbsoluteSize) partsTargetSurfaceSize_1.getAbsoluteSize());
+
+genericAbsoluteSize_3.getValue().setValue(custom_seabedSize);
+
+surfaceCustomMeshControl_1.getCustomConditions().get(PartsCustomSurfaceGrowthRateOption.class).setSelected(PartsCustomSurfaceGrowthRateOption.Type.CUSTOM);
+
+PartsCustomSimpleSurfaceGrowthRate partsCustomSimpleSurfaceGrowthRate_0 = 
+surfaceCustomMeshControl_1.getCustomValues().get(PartsCustomSimpleSurfaceGrowthRate.class);
+
+partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.FAST);
+
+
+// // ISSUES: here are the commands for growth rates ... figure out tje syntax to use with USER INPUTS
+// PartsCustomSimpleSurfaceGrowthRate partsCustomSimpleSurfaceGrowthRate_0 = 
+//   surfaceCustomMeshControl_1.getCustomValues().get(PartsCustomSimpleSurfaceGrowthRate.class);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.DISABLE);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.VERYSLOW);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.SLOW);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.MEDIUM);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.FAST);
+
+// partsCustomSimpleSurfaceGrowthRate_0.getSurfaceGrowthRateOption().setSelected(PartsSurfaceGrowthRateOption.Type.CUSTOM);
+
+
+} // end execute0()
 } // end public class

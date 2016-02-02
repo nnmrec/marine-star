@@ -103,19 +103,21 @@ public class main extends StarMacro {
 
     
 
+
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes.java"))).play();
     
     
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh_level0.java"))).play();
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
+   // //  // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
+   // //  // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh_level0.java"))).play();
+   // //  // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
+   // //  // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
 
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_defaultLayout.java"))).play();
+   //  new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_defaultLayout.java"))).play();
         
 
 
-
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("updateConvergenceCriteria.java"))).play();
+    
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run.java"))).play();
 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("exportProbes.java"))).play();

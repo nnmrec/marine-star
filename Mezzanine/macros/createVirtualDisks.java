@@ -99,7 +99,8 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
       	String name = textline.get(i).split(",")[0];
         names.add(name);
 //DEBUG
-simulation_0.println("name = " + names.get(i));        
+simulation_0.println("name = " + name); 
+simulation_0.println("names(i) = " + names.get(i));        
       	// name[i]			= textline.get(i).split(",")[0];
       	table[i]		= textline.get(i).split(",")[1];
       	rotor_rpm[i] 	= Double.parseDouble(textline.get(i).split(",")[2]);
@@ -144,93 +145,150 @@ simulation_0.println("name = " + names.get(i));
 	    VirtualDiskModel virtualDiskModel_0 = 
 	      physicsContinuum_0.getModelManager().getModel(VirtualDiskModel.class);
 
-	    VirtualDisk virtualDisk_0 = 
-	      virtualDiskModel_0.getVirtualDiskManager().createDisk(names.get(i));
-
-      	virtualDisk_0.setDisplaySourceTerm(true);
-
-	    virtualDisk_0.setActiveMethod(OneDMomentumMethod.class);
-
 	    
 
+	    ///////////////////////////////
+		// Body force propeller method 
+			// VirtualDisk virtualDisk_0 = 
+		 //      virtualDiskModel_0.getVirtualDiskManager().createDisk(names.get(i));
+
+	  //     	virtualDisk_0.setDisplaySourceTerm(true);
+
+		 //    virtualDisk_0.setActiveMethod(BodyForcePropellerMethod.class);  
+
+		 //    virtualDisk_0.getComponentsManager().get(PropellerCurve.class).setActiveMethod(PropellerCurveTableMethod.class);
+
+	  //   	PropellerCurveTableMethod propellerCurveTableMethod_0 = 
+	  //         ((PropellerCurveTableMethod) virtualDisk_0.getComponentsManager().get(PropellerCurve.class).getActiveMethod());
+		  
+		 //    FileTable fileTable_0 = 
+	  //         (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[0] + ".csv"));
+	     
+			// propellerCurveTableMethod_0.setTable(fileTable_0);
+
+		 //    propellerCurveTableMethod_0.setAdvanceRatio("AdvanceRatio");
+
+		 //    propellerCurveTableMethod_0.setThrustCoeff("Thrust_Kt");
+
+		 //    propellerCurveTableMethod_0.setMomentCoeff("Torque_Kq");
+
+		 //    propellerCurveTableMethod_0.setEfficiency("Efficiency");
+
+		 //    SimpleDiskGeometry simpleDiskGeometry_0 = 
+		 //      virtualDisk_0.getComponentsManager().get(SimpleDiskGeometry.class);
+
+		 //    simpleDiskGeometry_0.getDiskOuterRadius().setValue(rotor_radius[i]);
+
+		 //    simpleDiskGeometry_0.getDiskInnerRadius().setValue(hub_radius[i]);
+
+		 //    simpleDiskGeometry_0.getDiskThickness().setValue(rotor_thick[i]);
+
+		 //    Coordinate coordinate_0 = 
+		 //      simpleDiskGeometry_0.getDiskOrigin();
+
+		 //    Units units_1 = 
+		 //      ((Units) simulation_0.getUnitsManager().getObject("m"));
+
+		 //    simulation_0.println("DEBUG: x = " + x[i]);
+		 //    simulation_0.println("DEBUG: y = " + y[i]);
+		 //    simulation_0.println("DEBUG: z = " + z[i]);
+		 //    coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {x[i], y[i], z[i]}));
+
+		 //    ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx[i], ny[i], nz[i]);
+
+		 //    PropellerInflowVelocityPlane propellerInflowVelocityPlane_2 = 
+		 //      virtualDisk_0.getComponentsManager().get(PropellerInflowVelocityPlane.class);
+
+		 //    propellerInflowVelocityPlane_2.getRadius().setValue(rotor_radius[i]);
+
+		 //    propellerInflowVelocityPlane_2.getOffset().setValue(-1*4*rotor_radius[i]);
+
+		 //    VdmRotationRateInputValue vdmRotationRateInputValue_2 = 
+		 //      virtualDisk_0.getComponentsManager().get(VdmRotationRateInputValue.class);
+
+		 //    Units units_rpm0 = 
+		 //      ((Units) simulation_0.getUnitsManager().getObject("rpm"));
+
+		 //    vdmRotationRateInputValue_2.getRotationRate().setUnits(units_rpm0);
+
+		 //    vdmRotationRateInputValue_2.getRotationRate().setValue(rotor_rpm[i]);
+
+
+		 //    virtualDisk_0.getComponentsManager().get(PropellerHandednessOption.class).setSelected(PropellerHandednessOption.Type.LEFT_HANDED);
+		 //    // virtualDisk_0.getComponentsManager().get(PropellerHandednessOption.class).setSelected(PropellerHandednessOption.Type.RIGHT_HANDED);
+
+		 //    // virtualDisk_0.getComponentsManager().get(PropellerOperationPointInputOption.class).setSelected(PropellerOperationPointInputOption.Type.THRUST_SPECIFIED);
+		 //    // virtualDisk_0.getComponentsManager().get(PropellerOperationPointInputOption.class).setSelected(PropellerOperationPointInputOption.Type.TORQUE_SPECIFIED);
+		 //    virtualDisk_0.getComponentsManager().get(PropellerOperationPointInputOption.class).setSelected(PropellerOperationPointInputOption.Type.ROTATION_RATE_SPECIFIED);
 
 
 
 
+  
 
+	    ///////////////////////////////
+		// 1D-Momentum method   
+		    VirtualDisk virtualDisk_0 = 
+		      virtualDiskModel_0.getVirtualDiskManager().createDisk(names.get(i));
 
+	      	virtualDisk_0.setDisplaySourceTerm(true);
 
+		    virtualDisk_0.setActiveMethod(OneDMomentumMethod.class);
 
+		    virtualDisk_0.getComponentsManager().get(PowerCurve.class).setActiveMethod(PowerCurveTableMethod.class);
 
+		    PowerCurveTableMethod powerCurveTableMethod_0 = 
+		      ((PowerCurveTableMethod) virtualDisk_0.getComponentsManager().get(PowerCurve.class).getActiveMethod());
 
+		    FileTable fileTable_0 = 
+	          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[0] + ".csv"));
+	   
+		    powerCurveTableMethod_0.setTable(fileTable_0);
 
+		    powerCurveTableMethod_0.setWindSpeed("WindSpeed_m/s");
 
+		    powerCurveTableMethod_0.setPower("Power_Watts");
 
+		    powerCurveTableMethod_0.setThrustCoeff("ThrustCoefficient");
 
+		    SimpleDiskGeometry simpleDiskGeometry_0 = 
+		      virtualDisk_0.getComponentsManager().get(SimpleDiskGeometry.class);
 
-	    // assign the file table
-	    virtualDisk_0.getComponentsManager().get(PowerCurve.class).setActiveMethod(PowerCurveTableMethod.class);
+		    simpleDiskGeometry_0.getDiskOuterRadius().setValue(rotor_radius[i]);
 
-	    PowerCurveTableMethod powerCurveTableMethod_0 = 
-	      ((PowerCurveTableMethod) virtualDisk_0.getComponentsManager().get(PowerCurve.class).getActiveMethod());
+		    simpleDiskGeometry_0.getDiskInnerRadius().setValue(hub_radius[i]);
 
-	    // optional: could load different power tables for different turbine types or operating conditions
-	    FileTable fileTable_0 = 
-          (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[0] + ".csv"));
-          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/tables/" + table[i] + ".csv"));
-          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table[i]));
-          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath(table));
-          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../inputs/virtual-blade-1DM_Speed_Power_Ct.csv"));
-          // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("/mnt/data-RAID-10/akshaybagi/Mezzanine/Starccm+_WT_perf_Speed_Power_Ct.csv"));
-          
-	    powerCurveTableMethod_0.setTable(fileTable_0);
+		    simpleDiskGeometry_0.getDiskThickness().setValue(rotor_thick[i]);
 
-	    powerCurveTableMethod_0.setWindSpeed("WindSpeed_m/s");
+		    Coordinate coordinate_0 = 
+		      simpleDiskGeometry_0.getDiskOrigin();
 
-	    powerCurveTableMethod_0.setPower("Power_Watts");
+		    Units units_1 = 
+		      ((Units) simulation_0.getUnitsManager().getObject("m"));
 
-	    powerCurveTableMethod_0.setThrustCoeff("ThrustCoefficient");
+		    simulation_0.println("DEBUG: x = " + x[i]);
+		    simulation_0.println("DEBUG: y = " + y[i]);
+		    simulation_0.println("DEBUG: z = " + z[i]);
+		    coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {x[i], y[i], z[i]}));
 
-	    SimpleDiskGeometry simpleDiskGeometry_0 = 
-	      virtualDisk_0.getComponentsManager().get(SimpleDiskGeometry.class);
+		    ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx[i], ny[i], nz[i]);
 
-	    simpleDiskGeometry_0.getDiskOuterRadius().setValue(rotor_radius[i]);
+		    PropellerInflowVelocityPlane propellerInflowVelocityPlane_2 = 
+		      virtualDisk_0.getComponentsManager().get(PropellerInflowVelocityPlane.class);
 
-	    simpleDiskGeometry_0.getDiskInnerRadius().setValue(hub_radius[i]);
+		    propellerInflowVelocityPlane_2.getRadius().setValue(rotor_radius[i]);
 
-	    simpleDiskGeometry_0.getDiskThickness().setValue(rotor_thick[i]);
+		    propellerInflowVelocityPlane_2.getOffset().setValue(-1*4*rotor_radius[i]);
 
-	    Coordinate coordinate_0 = 
-	      simpleDiskGeometry_0.getDiskOrigin();
+		    VdmRotationRateInputValue vdmRotationRateInputValue_2 = 
+		      virtualDisk_0.getComponentsManager().get(VdmRotationRateInputValue.class);
 
-	    Units units_1 = 
-	      ((Units) simulation_0.getUnitsManager().getObject("m"));
+		    Units units_0 = 
+		      ((Units) simulation_0.getUnitsManager().getObject("rpm"));
 
-	    simulation_0.println("DEBUG 00: x = " + x[i]);
-	    simulation_0.println("DEBUG 00: y = " + y[i]);
-	    simulation_0.println("DEBUG 00: z = " + z[i]);
-	    coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {x[i], y[i], z[i]}));
-	    // coordinate_0.setCoordinate(units_1, units_1, units_1, new DoubleVector(new double[] {coords_VirtualDisks[i][0], coords_VirtualDisks[i][1], coords_VirtualDisks[i][2]}));
+		    vdmRotationRateInputValue_2.getRotationRate().setUnits(units_0);
 
-	    ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx[i], ny[i], nz[i]);
-	    // ((NormalAndCoordinateSystem) simpleDiskGeometry_0.getOrientationSpecification()).getDiskNormal().setComponents(nx, ny, nz);
-
-	    PropellerInflowVelocityPlane propellerInflowVelocityPlane_2 = 
-	      virtualDisk_0.getComponentsManager().get(PropellerInflowVelocityPlane.class);
-
-	    propellerInflowVelocityPlane_2.getRadius().setValue(rotor_radius[i]);
-
-	    propellerInflowVelocityPlane_2.getOffset().setValue(-1*4*rotor_radius[i]);
-
-	    VdmRotationRateInputValue vdmRotationRateInputValue_2 = 
-	      virtualDisk_0.getComponentsManager().get(VdmRotationRateInputValue.class);
-
-	    Units units_0 = 
-	      ((Units) simulation_0.getUnitsManager().getObject("rpm"));
-
-	    vdmRotationRateInputValue_2.getRotationRate().setUnits(units_0);
-
-	    vdmRotationRateInputValue_2.getRotationRate().setValue(rotor_rpm[i]);
+		    vdmRotationRateInputValue_2.getRotationRate().setValue(rotor_rpm[i]);
 
 
 
@@ -257,13 +315,14 @@ simulation_0.println("name = " + names.get(i));
 
       	virtualDiskMomentReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskMomentReport_0.setPresentationName("Torque {" + names.get(i) + "}");
+		virtualDiskMomentReport_0.setPresentationName("Torque (" + names.get(i) + ")");
 
 	    VirtualDiskMomentReport virtualDiskMomentReport_1 = 
-	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque {" + names.get(i) + "}"));
+	      ((VirtualDiskMomentReport) simulation_0.getReportManager().getReport("Torque (" + names.get(i) + ")"));
 
 	    ReportMonitor reportMonitor_5 = 
 	      virtualDiskMomentReport_1.createMonitor();
+
 
 	    // Thrust
 		VirtualDiskForceReport virtualDiskForceReport_0 = 
@@ -271,16 +330,40 @@ simulation_0.println("name = " + names.get(i));
 		  
 		virtualDiskForceReport_0.setVirtualDisk(virtualDisk_0);
 
-		virtualDiskForceReport_0.setPresentationName("Thrust {" + names.get(i) + "}");
+		virtualDiskForceReport_0.setPresentationName("Thrust (" + names.get(i) + ")");
 
 	    VirtualDiskForceReport virtualDiskForceReport_1 = 
-	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust {" + names.get(i) + "}"));
+	      ((VirtualDiskForceReport) simulation_0.getReportManager().getReport("Thrust (" + names.get(i) + ")"));
 
 	    ReportMonitor reportMonitor_6 = 
 	      virtualDiskForceReport_1.createMonitor();
 
 
 
+	    // Rotor Speed
+	  	ExpressionReport expressionReport_0 = 
+		  simulation_0.getReportManager().createReport(ExpressionReport.class);
+simulation_0.println("DEBUG 666: testing 1");		
+		expressionReport_0.setDefinition("" + rotor_rpm[i] + "");
+		expressionReport_0.setPresentationName("Rotor Speed (" + names.get(i) + ")");
+		ReportMonitor reportMonitor_00 = 
+		  expressionReport_0.createMonitor();
+
+
+	 //    Units units_rpm = 
+  //         ((Units) simulation_0.getUnitsManager().getObject("rpm"));
+		// VirtualDiskRotationRateReport virtualDiskRotationRateReport_0 = 
+  //     		simulation_0.getReportManager().createReport(VirtualDiskRotationRateReport.class);
+		// virtualDiskRotationRateReport_0.setVirtualDisk(virtualDisk_0);
+	 //    virtualDiskRotationRateReport_0.setPresentationName("Rotor Speed (" + names.get(i) + ")");
+		// virtualDiskRotationRateReport_0.setUnits(units_rpm);
+
+
+		
+
+	    
+
+	    
     
 
 
@@ -311,7 +394,7 @@ simulation_0.println("name = " + names.get(i));
 
 	    SimpleCylinderPart simpleCylinderPart_0 = 
 	      meshPartFactory_0.createNewCylinderPart(simulation_0.get(SimulationPartManager.class));
-	      simpleCylinderPart_0.setPresentationName("refine cylinder {" + names.get(i) + "}");
+	      simpleCylinderPart_0.setPresentationName("refine cylinder (" + names.get(i) + ")");
 
 
 	    simpleCylinderPart_0.setDoNotRetessellate(true);
@@ -375,7 +458,7 @@ simulation_0.println("name = " + names.get(i));
 // 	    SimpleSpherePart simpleSpherePart_0 = 
 // 	      meshPartFactory_0.createNewSpherePart(simulation_0.get(SimulationPartManager.class));
 	      
-// 	    simpleSpherePart_0.setPresentationName("refine sphere {" + names.get(i) + "}");
+// 	    simpleSpherePart_0.setPresentationName("refine sphere (" + names.get(i) + ")");
 
 // 	    simpleSpherePart_0.setDoNotRetessellate(true);
 
@@ -431,7 +514,7 @@ simulation_0.println("name = " + names.get(i));
 	   //  SimpleConePart simpleConePart_0 = 
 	   //    meshPartFactory_0.createNewConePart(simulation_0.get(SimulationPartManager.class));
 
-	  	// simpleConePart_0.setPresentationName("refine cone {" + names.get(i) + "}");
+	  	// simpleConePart_0.setPresentationName("refine cone (" + names.get(i) + ")");
 
 	   //  simpleConePart_0.setDoNotRetessellate(true);
 
@@ -497,7 +580,7 @@ simulation_0.println("name = " + names.get(i));
 	    VolumeCustomMeshControl volumeCustomMeshControl_2 = 
 	      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	      volumeCustomMeshControl_2.setPresentationName("refine cylinder {" + names.get(i) + "}");
+	      volumeCustomMeshControl_2.setPresentationName("refine cylinder (" + names.get(i) + ")");
 
 	      volumeCustomMeshControl_2.getGeometryObjects().setObjects(simpleCylinderPart_0);
 
@@ -535,7 +618,7 @@ simulation_0.println("name = " + names.get(i));
 	    // VolumeCustomMeshControl volumeCustomMeshControl_3 = 
 	    //   autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-	    // volumeCustomMeshControl_3.setPresentationName("refine sphere {" + names.get(i) + "}");
+	    // volumeCustomMeshControl_3.setPresentationName("refine sphere (" + names.get(i) + ")");
 
 	    // volumeCustomMeshControl_3.getGeometryObjects().setObjects(simpleSpherePart_0);
 
@@ -565,7 +648,7 @@ simulation_0.println("name = " + names.get(i));
 	 //    VolumeCustomMeshControl volumeCustomMeshControl_0 = 
 	 //      autoMeshOperation_0.getCustomMeshControls().createVolumeControl();
 
-		// volumeCustomMeshControl_0.setPresentationName("refine cone {" + names.get(i) + "}");
+		// volumeCustomMeshControl_0.setPresentationName("refine cone (" + names.get(i) + ")");
 
 	 //    volumeCustomMeshControl_0.getGeometryObjects().setObjects(simpleConePart_0);
 
@@ -584,20 +667,6 @@ simulation_0.println("name = " + names.get(i));
 	 //      ((GenericAbsoluteSize) volumeControlSize_1.getAbsoluteSize());
 
 	 //    genericAbsoluteSize_1.getValue().setValue(0.40*rotor_radius[i]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	} // end FOR loop
@@ -620,9 +689,6 @@ simulation_0.println("name = " + names.get(i));
 				// create threshold parts
 			    PrimitiveFieldFunction primitiveFieldFunction_0 = 
 			      ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction(name_VirtualDiskMarker[i]));
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskMarker" + i));
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskMarker1"));			      
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskMarker" + "i]"));
 
 			    ThresholdPart thresholdPart_0 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_0, 0);
@@ -632,14 +698,11 @@ simulation_0.println("name = " + names.get(i));
 
 			    PrimitiveFieldFunction primitiveFieldFunction_1 = 
 			      ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction(name_VirtualDiskInflowPlaneMarker[i]));
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskInflowPlaneMarker" + i));
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskInflowPlaneMarker1"));
-			      // ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("VirtualDiskInflowPlaneMarker" + "i]"));
 
 			    ThresholdPart thresholdPart_1 = 
 			      simulation_0.getPartManager().createThresholdPart(new NeoObjectVector(new Object[] {region_0}), new DoubleVector(new double[] {1.0, 1.0}), units_none, primitiveFieldFunction_1, 0);
 
-			    thresholdPart_1.setPresentationName("inflow {" + names.get(i) + "}");
+			    thresholdPart_1.setPresentationName("inflow (" + names.get(i) + ")");
 
 
 			    ///////////////////////////////////////////////////////////////////////////////
@@ -662,58 +725,144 @@ simulation_0.println("name = " + names.get(i));
 
 			    volumeAverageReport_0.getParts().setObjects(thresholdPart_1);
 
-				// volumeAverageReport_0.setPresentationName("volume avg. inflow");		
-			    volumeAverageReport_0.setPresentationName("volume avg. inflow {" + names.get(i) + "}");
+			    volumeAverageReport_0.setPresentationName("volume avg. inflow (" + names.get(i) + ")");
 
 
 			    VolumeAverageReport volumeAverageReport_1 = 
-			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow {" + names.get(i) + "}"));
+			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow (" + names.get(i) + ")"));
 
 			    ReportMonitor reportMonitor_0 = 
 				  volumeAverageReport_1.createMonitor();
 
+
+
+
+
+
+
+			    // FIELD FUNCTIONS
+				// tip-speed ratio
+				UserFieldFunction userFieldFunction_0 = 
+			      simulation_0.getFieldFunctionManager().createFieldFunction();
+			    userFieldFunction_0.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
+			    userFieldFunction_0.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
+			    userFieldFunction_0.setFunctionName("Tip-Speed-Ratio (" + names.get(i) + ")");
+			    userFieldFunction_0.setDefinition(rotor_radius[i] + " * ${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30) / ${volumeavg.inflow(" + names.get(i) + ")Report}");
+
+			    // power
+			    UserFieldFunction userFieldFunction_1 = 
+			      simulation_0.getFieldFunctionManager().createFieldFunction();
+			    userFieldFunction_1.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
+			    userFieldFunction_1.setPresentationName("Power (" + names.get(i) + ")");
+			    userFieldFunction_1.setFunctionName("Power (" + names.get(i) + ")");
+			    userFieldFunction_1.setDefinition("${Torque(" + names.get(i) + ")Report} *${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30)");
+
+
+
+			    // REPORTS
+				ExpressionReport expressionReport_0 = 
+      				simulation_0.getReportManager().createReport(ExpressionReport.class);
+			    expressionReport_0.setDefinition("${Power (" + names.get(i) + ")}");
+			    expressionReport_0.setPresentationName("Power (" + names.get(i) + ")");
+				    ReportMonitor reportMonitor_00 = 
+				      expressionReport_0.createMonitor();
+
+    
+
+			    ExpressionReport expressionReport_1 = 
+      				simulation_0.getReportManager().createReport(ExpressionReport.class);
+			    expressionReport_1.setDefinition("${Tip-Speed-Ratio (" + names.get(i) + ")}");
+			    expressionReport_1.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
+					ReportMonitor reportMonitor_11 = 
+					      expressionReport_1.createMonitor();
+
+
+
+				// reports on rotor speeds
+				ExpressionReport expressionReport_2 = 
+				  ((ExpressionReport) simulation_0.getReportManager().getReport("Rotor Speed (" + names.get(i) + ")"));
+
+				ReportMonitor reportMonitor_1 = 
+				  expressionReport_0.createMonitor();
+
+
 		} // end FOR loop
 
+
+
+
 		ReportMonitor reportMonitor_0 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + names.get(0) + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow (" + names.get(0) + ") Monitor"));
 	    MonitorPlot monitorPlot_0 = 
-	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow {" + names.get(0) + "} Monitor Plot");
 	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow");
 	    monitorPlot_0.setPresentationName("rotors-inflow");
 
-
 	    ReportMonitor reportMonitor_1 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + names.get(0) + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust (" + names.get(0) + ") Monitor"));
 	    MonitorPlot monitorPlot_1 = 
-	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "thrust {" + names.get(0) + "} Monitor Plot");
 	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_1}), "thrust");
 	    monitorPlot_1.setPresentationName("rotors-thrust");
 
-
 	    ReportMonitor reportMonitor_2 = 
-		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + names.get(0) + "} Monitor"));
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque (" + names.get(0) + ") Monitor"));
 	    MonitorPlot monitorPlot_2 = 
-	      // simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "torque {" + names.get(0) + "} Monitor Plot");
 	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_2}), "torque");
 	    monitorPlot_2.setPresentationName("rotors-torque");
+
+
+// simulation_0.println("DEBUG 03:" + "Rotor Speed (" + names.get(0) + ") Monitor");
+simulation_0.println("DEBUG 66: testing 1");
+	    ReportMonitor reportMonitor_3 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Rotor Speed (" + names.get(0) + ") Monitor"));
+simulation_0.println("DEBUG 66: testing 2");
+	    MonitorPlot monitorPlot_3 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_3}), "rotor speed");
+	    monitorPlot_3.setPresentationName("rotor speed");
+
+	    ReportMonitor reportMonitor_4 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Tip-Speed-Ratio (" + names.get(0) + ") Monitor"));
+	    MonitorPlot monitorPlot_4 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_4}), "Tip-Speed-Ratio");
+	    monitorPlot_4.setPresentationName("Tip-Speed-Ratio");
+
+	   ReportMonitor reportMonitor_5 = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Power (" + names.get(0) + ") Monitor"));
+	    MonitorPlot monitorPlot_5 = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_5}), "Power");
+	    monitorPlot_5.setPresentationName("Power");
+
+
 
 
 
 	    for (int i = 1; i < nVirtualDisks; i++) {
             ReportMonitor reportMonitor_0n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow {" + names.get(i) + "} Monitor"));
-              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow (" + names.get(i) + ") Monitor"));
             monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_0n}));
 
             ReportMonitor reportMonitor_1n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust {" + names.get(i) + "} Monitor"));
-              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust (" + names.get(i) + ") Monitor"));
             monitorPlot_1.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_1n}));
 
             ReportMonitor reportMonitor_2n = 
-              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque {" + names.get(i) + "} Monitor"));
-              // ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque"));
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Torque (" + names.get(i) + ") Monitor"));
             monitorPlot_2.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_2n}));
+
+
+
+            ReportMonitor reportMonitor_3n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Rotor Speed (" + names.get(i) + ") Monitor"));
+            monitorPlot_3.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_3n}));
+
+
+            ReportMonitor reportMonitor_4n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Tip-Speed-Ratio (" + names.get(i) + ") Monitor"));
+            monitorPlot_4.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_4n}));
+
+            ReportMonitor reportMonitor_5n = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Power (" + names.get(i) + ") Monitor"));
+            monitorPlot_5.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_5n}));
+
 
         }
 

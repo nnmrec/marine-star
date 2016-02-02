@@ -33,9 +33,9 @@ public class remeshAMR extends StarMacro {
 
     
     
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR.java"))).play();  
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh_level0.java"))).play();
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createScenes_addAMR_threshold.java"))).play();
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("refineMesh.java"))).play();
 
 

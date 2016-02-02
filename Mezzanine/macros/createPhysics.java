@@ -142,6 +142,20 @@ public class createPhysics extends StarMacro {
     velocityProfile_0.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(init_Vx, init_Vy, init_Vz);
 
 
+     // setup the AutoSave
+    AutoSave autoSave_0 = 
+      simulation_0.getSimulationIterator().getAutoSave();
+
+    StarUpdate starUpdate_0 = 
+      autoSave_0.getStarUpdate();
+
+    starUpdate_0.setEnabled(true);
+
+    IterationUpdateFrequency iterationUpdateFrequency_0 = 
+      starUpdate_0.getIterationUpdateFrequency();
+
+    iterationUpdateFrequency_0.setIterations(50);
+
 
   } // end execute0()
 } // end public class

@@ -246,7 +246,7 @@ public class createPartsAndRegionsBC extends StarMacro {
 
 
     ///////////////////////////////////////////////////////////////////////////////
-	// after creating the Regions some new Solver options appear
+	  // after creating the Regions some new Solver options appear
     //
     KwTurbViscositySolver kwTurbViscositySolver_0 = 
       ((KwTurbViscositySolver) simulation_0.getSolverManager().getSolver(KwTurbViscositySolver.class));
@@ -254,6 +254,15 @@ public class createPartsAndRegionsBC extends StarMacro {
     kwTurbViscositySolver_0.setMaxTvr(1.0E10);
 
 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // setup some stoping criteria (default values will be fine for now)
+    //
+    ResidualMonitor residualMonitor_0 = 
+      ((ResidualMonitor) simulation_0.getMonitorManager().getMonitor("Continuity"));
+
+    MonitorIterationStoppingCriterion monitorIterationStoppingCriterion_0 = 
+      residualMonitor_0.createIterationStoppingCriterion();
 
   } // end execute0()
 } // end public class

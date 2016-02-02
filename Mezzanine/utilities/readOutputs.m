@@ -28,8 +28,8 @@ function [probes, rotors] = readOutputs(filesIO,probes,rotors)
     cols        = strsplit(header,',');
     rotors_name = cell(size(cols,2)-1, 1);
     for n = 2:size(cols,2)
-        token            = strtok(cols(n), '}');
-        [token, remain]  = strtok(token, '{');
+        token            = strtok(cols(n), ')');
+        [token, remain]  = strtok(token, '(');
         rotors_name{n-1} = remain{1}(2:end);
     end
     % read the data section
@@ -45,8 +45,8 @@ function [probes, rotors] = readOutputs(filesIO,probes,rotors)
     cols        = strsplit(header,',');
     rotors_name = cell(size(cols,2)-1, 1);
     for n = 2:size(cols,2)
-        token            = strtok(cols(n), '}');
-        [token, remain]  = strtok(token, '{');
+        token            = strtok(cols(n), ')');
+        [token, remain]  = strtok(token, '(');
         rotors_name{n-1} = remain{1}(2:end);
     end
     % read the data section
