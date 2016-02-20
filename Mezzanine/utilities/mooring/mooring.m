@@ -19,7 +19,7 @@ q_body  = zeros(nBodies, 6);
 v_body  = zeros(nBodies, 1);
 f_body  = zeros(nBodies, 6);
 for n = 1:nBodies
-    % positions (x,y,z)
+    % positions (x,y,z,nx,ny,nz)
     q_body(n,:) = [xyz_rotors(n,:), ang_rotors(n,:)];    
     % inflow velocities (velocity magnitude, volume avg. upsteam of rotor)
     v_body(n)   = vel_rotors(n);
